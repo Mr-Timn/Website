@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ultimate Sprite Fight</title>
+		<link rel="stylesheet" href="main.css">
+		<!--<script src="http://code.jquery.com/jquery-1.11.1.js"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script language="javascript" type="text/javascript" src="JQuery.js"></script>
+	</head>
+	<body>
+		<div class="heading">
+			<div class="tab">
+				<img src="http://imgur.com/53Pteak.png">
+			</div>
+		</div>
+		<div id="container">
+			<div class="gameCanvas">
+				<canvas class="game" id="game"></canvas>
+			</div>
+			<div id="help">
+				<div id="helpBDiv">
+					<button id="controlsB">Show Controls</button>
+				</div>
+				<div id="helpBText">
+					<div id="player1">
+					</div>
+					<div id="player2">
+					</div>
+				</div>
+			</div>
+			<div id="scripts">
+				<!--
+					Created this is ~2015, it's now 2021 - Not even going to bother fixing - Just manually adding tags below
+
+					<script id="loadScripts">
+					var SCRIPTS_TO_LOAD = {
+						"Game": ["ReturnFunctions","InitValues","Mouse","Player","Draw","Keyboard","Platform","Game"],
+						"Characters": ["Luffy","Mihawk","Kizaru","Ace","Franky","Enel"],
+						"Characters/Effects": ["Projectile","AnimatedProjectile","OnHitProjectile","Particle"],
+						"Characters/Animations": ["Animate"],
+						"Characters/AI": ["AI"]
+					}
+					
+					for (var dir in SCRIPTS_TO_LOAD){
+						for (var file = 0; file < SCRIPTS_TO_LOAD[dir].length; file++){
+							var currentFile = SCRIPTS_TO_LOAD[dir][file];
+							var newFile = dir + "/" + SCRIPTS_TO_LOAD[dir][file] + ".js";
+							var nScript = document.createElement("script");
+								nScript.type = "text/javascript";
+								nScript.id = currentFile;
+							$('#scripts').append(nScript);
+							$('#'+currentFile).attr('src',newFile)
+						}
+					}
+				</script>-->
+
+				<script type="text/javascript" src="Game/ReturnFunctions.js"></script>
+				<script type="text/javascript" src="Game/InitValues.js"></script>
+				<script type="text/javascript" src="Game/Mouse.js"></script>
+				<script type="text/javascript" src="Game/Mouse.js"></script>
+				<script type="text/javascript" src="Game/Player.js"></script>
+				<script type="text/javascript" src="Game/Draw.js"></script>
+				<script type="text/javascript" src="Game/Keyboard.js"></script>
+				<script type="text/javascript" src="Game/Platform.js"></script>
+				<script type="text/javascript" src="Game/game.js"></script>
+
+				<script type="text/javascript" src="Characters/Luffy.js"></script>
+				<script type="text/javascript" src="Characters/Mihawk.js"></script>
+				<script type="text/javascript" src="Characters/Kizaru.js"></script>
+				<script type="text/javascript" src="Characters/Ace.js"></script>
+				<script type="text/javascript" src="Characters/Franky.js"></script>
+				<script type="text/javascript" src="Characters/Enel.js"></script>
+				
+				<script type="text/javascript" src="Characters/Effects/Projectile.js"></script>
+				<script type="text/javascript" src="Characters/Effects/AnimatedProjectile.js"></script>
+				<script type="text/javascript" src="Characters/Effects/OnHitProjectile.js"></script>
+				<script type="text/javascript" src="Characters/Effects/Particle.js"></script>
+
+				<script type="text/javascript" src="Characters/Animations/Animate.js"></script>
+				<script type="text/javascript" src="Characters/AI/AI.js"></script>
+			</div>
+		</div>
+		<div id="footer">
+			<p>&copy;Optimum Gaming</p>
+		</div>
+	</body>
+</html>

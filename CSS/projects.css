@@ -1,0 +1,232 @@
+/*
+    Made by Jordan Hoosman
+*/
+
+:root {
+    --offset-x: 130px;
+}
+
+#ProjectList {
+    z-index: 7;
+    position: absolute;
+    width: calc(100% - var(--offset-x));
+    height: 100%;
+    color: white;
+
+    text-align: center;
+}
+.Project {
+    position: absolute;
+    border: 1px solid white;
+    height: 48%;
+}
+.JCodeBox {
+    display: inline-block;
+    vertical-align: middle;
+
+    width: 15%;
+    height: 70%;
+    
+    margin-left: 5%;
+    margin-right: 5%;
+
+    border: 1px dashed;
+}
+.ProjectLinks h3:hover {
+    cursor: pointer;
+}
+#ProjectsJCode {
+    width: 98%;
+    top: 10px;
+    left: var(--offset-x);
+}
+#ProjectsApps {
+    top: 50%;
+    left: var(--offset-x);
+    width: calc(50% - (var(--offset-x) / 2));
+}
+#ProjectsOther {
+    top: 50%;
+    right: calc(2% - (var(--offset-x))); 
+    width: calc(50% - (var(--offset-x) / 2));
+}
+
+#ProjectDescription {
+    z-index: 7;
+    text-align: center;
+    overflow-y: scroll;
+
+    position: absolute;
+    top: 2%;
+    left: calc(var(--offset-x));
+    width: calc(98% - var(--offset-x));
+	padding-bottom: 10px;
+    height: 96%;
+
+    color: white;
+
+    border: 2px dashed;
+}
+#ProjectTitle {
+    position: absolute;
+    width: 98%;
+    left: 1%;
+    border-bottom: 1px dashed;
+}
+#ProjectInfo {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    top: 100px;
+
+    font-size: 20px;
+}
+
+/*** Projects ***************/
+
+.jnum_numtitle {
+	font-size:25px;
+}
+.jnum_color1 {
+	color: rgb(255, 120, 20);
+}
+.jnum_color2 {
+	color: rgb(20, 80, 255);
+}
+.jnum_numdesc {
+	border:1px dotted; 
+	margin-top: 5px;
+	display:inline-block; 
+	width:45%; 
+	height: 200px;
+	vertical-align: top;
+	overflow: scroll;
+}
+
+/******************/
+
+.jtimg {
+	width: 720px;
+	height: 480px;
+}
+.jtexample {
+	display: inline-block;
+	vertical-align: top;
+	width: 550px;
+	border: 1px dotted white;
+}
+.jtexample h3 {
+	margin: 2px;
+	padding: 0;
+}
+#jtsetup {
+	margin-bottom: 10px;
+	border: 1px dotted white;
+}
+#jtpeople {
+	padding: 0;
+}
+#jtpeople h2 {
+	margin: 3px;
+}
+.jtpdesc {
+	padding: 0;
+	margin: 0;
+}
+#jtlobby {
+	vertical-align: top;
+	padding: 10px;
+}
+.jttitle {
+	padding-bottom: 5px;
+	border-bottom: 1px dotted white;
+}
+.jttitle h1 {
+	margin: 2px;
+}
+.jtmsgs {
+	height: 200px;
+	overflow-y: scroll;
+}
+
+/******************/
+
+.jcodeprojscreencaps {
+	overflow: scroll;
+	white-space: nowrap;
+	border: 1px dotted white;
+	padding: 5px 10px;
+}
+.jcodeprojscreencaps img {
+	vertical-align: top;
+}
+.jcodeprojvideo {
+	border: 1px dotted white;
+	margin-top: 10px;
+	padding: 10px;
+}
+.jcodeprojvideo video {
+	margin: 0;
+}
+
+/******************/
+
+#snakescreencaps h2 {
+	padding: 0;
+	margin: 2px;
+}
+#snakescreencaps img {
+	display: inline-block;
+	width: 480px;
+	height: 720px;
+}
+
+#rpsscreencaps h2 {
+	padding: 0;
+	margin: 2px;
+}
+#rpsscreencaps img {
+	display: inline-block;
+	width: 480px;
+	height: 720px;
+}
+
+/******************/
+
+.mycomps {
+	margin-top: 10px;
+	padding: 10px;
+	border: 1px dotted white;
+}
+.mycomps h2 {
+	margin-top: 0;
+	margin-bottom: 5px;
+	text-decoration: underline;
+	color: var(--text-color-blue);
+}
+.mycomps h3 {
+	margin: 0px auto;
+	color: var(--text-color-orange);
+}
+.mycomps h5 {
+	margin: 0;
+	color: var(--text-color-blue);
+}
+.mycomps p {
+	margin: 0;
+}
+.mycomps div { 
+	width: 50%;
+	margin-right: 10px;
+	display: inline-block;
+	vertical-align: top;
+}
+.mycomps img {
+	margin: 0;
+}
+.compimg {
+	width: 288px;
+	height: 360px;
+	
+	display: inline-block;
+}

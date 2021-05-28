@@ -1,0 +1,86 @@
+/*
+    Made by Jordan Hoosman
+*/
+
+:root {
+    --am-left: 200px;
+    --textdiv-opacity: 0.0;
+}
+
+#AboutMe {
+    z-index: 7;
+    position: absolute;
+    left: calc(var(--am-left));
+}
+.TextDivider {
+    position: absolute;
+    width: 70%;
+    left: 15%;
+   
+    height: 0;
+    border-top: 1px dotted;
+    opacity: var(--textdiv-opacity);
+}
+.AboutText {
+    z-index: 7;
+    position: absolute;
+    font-size: 22px;
+    text-align: center;
+    color: white;
+}
+.AboutText p {
+	position: relative;
+	margin: 2px 10px auto;
+	
+	font-size: 20px;
+}
+.AboutText h5 {
+	margin: 3px auto;
+	padding: 0;
+
+	color: var(--text-color-purple);
+}
+.AboutText h3 {
+	margin: 2px auto;
+
+	color: var(--text-color-blue);
+}
+
+.aboutblock {
+    opacity: 0.0;
+}
+#AboutText1 {
+    width: 40vw;
+}
+#AboutText2 {
+    left: 45vw;
+    width: 40vw;
+}
+
+#AboutImages {
+    z-index: 5;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.aboutpic {
+    position: fixed;
+    opacity: 0.0;
+}
+
+#KilldeerPeeps {
+    font-size: 10px;
+}
+.peep {
+    z-index: 7;
+    position: fixed;
+    color: white;
+    opacity: 0.0;
+}
+
+#GoToProjects:hover {
+    cursor: pointer;
+}

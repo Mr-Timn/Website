@@ -1,0 +1,34 @@
+/*
+    Made by Jordan Hoosman
+*/
+
+#ContactInfo {
+    z-index: 7;
+
+    position: absolute;
+    color: white;
+
+    top: 100px;
+    width: 100%;
+
+    text-align: center;
+}
+
+.contact h1 {
+    margin: 0;
+    color: rgb(230, 15, 90);
+}
+.contact h2 {
+    margin: 0;
+    margin-bottom: 15px;
+    display: inline-block;
+    
+    color: rgb( 215, 180, 30 );
+}
+.contact a {
+    margin: 0;
+    margin-bottom: 15px;
+    display: inline-block;
+    
+    color: rgb( 215, 180, 30 );
+}

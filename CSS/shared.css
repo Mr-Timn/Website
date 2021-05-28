@@ -1,0 +1,164 @@
+/*
+    Made by Jordan Hoosman
+*/
+
+/*
+    Developer notes
+    - Page content should have a z-index of 5
+*/
+
+:root {
+	--nav-start-logo: 25px;
+
+    --nav-min-width: 100px;
+	--nav-width: 3%;
+
+	--nav-buffer-y: 10px;
+	--nav-buffer-width: 10px;
+
+	--text-color-orange: rgb(225, 160, 45);
+	--text-color-blue: rgb(20, 160, 225);
+	--text-color-purple: rgb(155, 15, 255);
+}
+
+/*** Scroll bar ***************/
+
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background: grey;
+	border-radius: 7px;
+}
+::-webkit-scrollbar-corner {
+	display: none;
+}
+
+/***  ***************/
+
+body {
+    background-color: rgba(0, 0, 0, 255);
+    padding: 0;
+    margin: 0;
+
+    overflow: hidden;
+}
+a {
+	color: var(--text-color-orange);
+	text-decoration: underline;
+}
+a:hover {
+	cursor: pointer;
+}
+
+/*** Background Video ***************/
+
+#BackgroundVideo {
+    z-index: 1;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+}
+#BackgroundVideo video /* #VideoSource */ {
+    opacity: 0.0;
+
+    position: fixed;
+	
+	transform: translate(-50%, -50%);
+	min-width: 100%;
+    min-height: 100%;
+	top: 50%;
+    left: 50%;
+}
+#BackgroundVideo div /* #VideoShade */ {
+    z-index: 1;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+
+    background-color:  rgba(70, 70, 70, 0.0);
+}
+
+/*** Background Canvas ***************/
+
+#BackgroundCanvas {
+    z-index: 3;
+
+    opacity: 0.6;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+#BackgroundPause {
+    z-index: 3;
+    position: fixed;
+    width: 150px;
+    top: 5px;
+    left: calc(100% - 150px - 5px);
+    background-color: rgba(0, 0, 0, 0.3);
+
+    text-align: center;
+    color:rgba(255, 0, 0, 0.6);
+    font-size: 8px;
+}
+#BackgroundPause:hover {
+    cursor: pointer;
+}
+
+/*** Navigation ***************/
+
+#Navigation {
+    z-index: 9;
+    
+    position: fixed;
+	padding: 0;
+    
+	min-width: var(--nav-min-width);
+	width: var(--nav-width);
+    height: 100%;
+}
+#Navigation img {
+    position: fixed;
+    left: calc(-1 * var(--nav-min-width));
+	
+    min-width: var(--nav-min-width);
+    min-height: var(--nav-min-width);
+
+	max-width: var(--nav-width);
+}
+#Navigation img:hover {
+    cursor: pointer;
+}
+
+#NavShade {
+	z-index: 7;
+
+	background-color: white;
+	opacity: 0.15;
+	min-width: calc(100% + var(--nav-buffer-width));
+	height: 100%;
+}
+#NavBorder {
+    position: fixed;
+    background-color: black;
+    width: 5px;
+}
+
+#NavHoverText {
+    position: absolute;
+}
+#NavHoverText {
+    color: rgb(255, 255, 255);
+}
+
+/******************/
+

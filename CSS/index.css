@@ -1,0 +1,126 @@
+/*
+    Made by Jordan Hoosman
+*/
+
+:root {
+	/* Handled in index.js - Here for reference */
+	--ll-buffer: 1vmin;
+    --ll-top: 1vmin;
+    --ll-size: 48.5vmin;
+    --ll-bottom: 50.5vmin;
+	--ll-left: calc(var(--nav-width) + 1vmin);
+}
+
+#LargeLinks {
+    z-index: 5;
+
+    position: absolute;
+}
+.LL {
+    z-index: 5;
+    
+    position: fixed;
+    width: var(--ll-size);
+    height: var(--ll-size);
+	top: calc(-1 * var(--ll-size) - 5px);
+
+    border: 1px solid;
+    border-color: white;
+
+    overflow: hidden;
+}
+.LLTitle {
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    
+    border-top: 1px solid white;
+
+    position: absolute;
+    padding: 0;
+
+    width: 100%;
+    bottom: 0;
+}
+.LLTitle:hover {
+    cursor: pointer;
+}
+.LLTitle h3 {
+    margin: 5px 0;
+}
+
+.LLLeft {
+    left: calc(var(--ll-left));
+}
+.LLRight {
+    left: calc(var(--ll-left) + var(--ll-size) + var(--ll-buffer));
+}
+
+#LLCraneGIF, #LLCraneGIFcpy {
+    position: absolute;
+
+    width: 75px;
+    height: 75px;
+
+    top: 10px;
+    left: calc(80% - 75px);
+}
+#LLPianoShadow {
+    width: 300px;
+    height: 140px;
+    bottom: 50px;
+
+    position: absolute;
+    margin-left: calc(50% - 150px);
+}
+.LLNote {
+    position: absolute;
+
+    width: 10px;
+    height: 20px;
+}
+
+#LLSequence {
+    position: absolute;
+    top: 18%;
+    word-spacing: -4px;
+    padding: 0;
+}
+#LLSeqSpace {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+#LLSequence h2 {
+    color: green;
+    opacity: 0.5;
+    display: inline-block;
+}
+
+.LLMail {
+    position: absolute;
+
+    width: 20px;
+    height: 10px;
+}
+
+.LLLightningBall {
+    position: absolute;
+
+    width: 65px;
+    height: 65px;
+}
+
+#LLDiv {
+    z-index: 7;
+
+	opacity: 0.0;
+
+    position: absolute;
+    width: 1px;
+    height: 98%;
+    top: 1%;
+    left: calc(var(--ll-left) + (var(--ll-size) * 2) + var(--ll-buffer) + 3vw );
+
+    color: white;
+    border-left: 1px solid;
+}

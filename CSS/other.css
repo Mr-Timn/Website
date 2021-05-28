@@ -1,0 +1,10 @@
+/*
+	Made by Jordan Hoosman
+*/
+
+#NothingOther {
+	z-index: 5;
+	position: absolute;
+	left: calc(max(var(--nav-width), var(--nav-min-width)) + 50px);
+	color: white;
+}

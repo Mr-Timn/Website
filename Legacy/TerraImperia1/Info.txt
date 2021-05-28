@@ -1,0 +1,52 @@
+
+
+ANIMATIONS {	
+	Last number 9999 = run once
+	Last number 9998 = run and reset combo
+	Last number 9997 = special
+}
+
+BUTTONS
+	new Button(
+		Name,
+		X,
+		Y,
+		Width,
+		Height,
+		Color,
+		Text,
+		SlideObj,
+			[
+				X,
+				Y,
+				Tick,
+				DelayTime
+			]
+		TextObj,
+			[
+				Font Size,
+				Font Family,
+				Text Color
+			]
+		Image,
+		buttonFunction
+			function(){
+				Code;
+			}
+	)
+	
+Text 
+	new MenuText(
+		Name,
+		X,
+		Y,
+		Width,
+		Height,
+		Text,
+		TextObj	
+			[
+				Font Size,
+				Font Family,
+				Text Color
+			]
+	)
