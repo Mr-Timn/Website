@@ -22,7 +22,7 @@ function LoadSharedContent() {
 		<div id="Navigation">
 			<div id="NavShade"></div>
 
-			<img class="NavItem" id="NavLogo" src="Images/nav/Logo3.png" alt="Logo"/>
+			<a href="https://github.com/Mr-Timn/Website"><img class="NavItem" onmousemove="NavRotateItem(this)" id="NavLogo" src="Images/nav/Logo3.png" alt="GitHub"/></a>
 			<div id="NavButtons">
 				<img class="NavItem" onclick=NavButtonClick('INDEX')    onmousemove="NavRotateItem(this)" id="NavHome"    src="Images/nav/home.png"     alt="Home"     />
 				<img class="NavItem" onclick=NavButtonClick('ABOUT')    onmousemove="NavRotateItem(this)" id="NavAbout"   src="Images/nav/about.png"    alt="About"    />
