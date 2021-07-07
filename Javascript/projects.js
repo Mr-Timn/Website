@@ -162,27 +162,27 @@ function Load_JRelay() {
 				</p>
 				<img src="Images/projects/JRelay/JCodeStructure.png" width="500px" height="200px">
 				<p>
-					JSecure is only 100% working with Linux currently. Everything <i>but</i> <a href="https://gmplib.org/">gmp</i> is compiled for Windows due to gmp being a bit tricky to 
+					JSecure is only 100% working with Linux currently. Everything <i>but</i> <a href="https://gmplib.org/">gmp</a> is compiled for Windows due to gmp being a bit tricky to 
 					use. For android everything compiles and runs on my android devices but it has a strange bug where randomly data drops or is intercepted by other data on the device. It 
 					has managed to connect <i>once</i> because none of the data was dropped. Everything is currently still in progress so this section will be updated soon.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JNetwork</span> is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
+					JNetwork is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
 					packaging and caching.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JSocket</span> resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
+					JSocket resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
 					socket types are currently usable implementations. For all types of socket communication, sending, recveiving, and broadcating data are available. Data handled via typical 
 					methods e.g. blocked and timed or through polling. Additionally I've added other LAN functions for getting IP addresses/interfaces and port scanning. Port scanning has been 
 					implemented in 2 ways - One normal, timeout based scanning and a TCP-SYN scan similiar to nmap which is considerably faster but requires admin privileges.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JClient and JServer</span> are TCP implementations using JSocket with function hooks for additional implemetation on top of 
+					JClient and JServer are TCP implementations using JSocket with function hooks for additional implemetation on top of 
 					each. For clients it handles safely connecting, disconnecting, sending/receiving data. For servers it handles safely starting, closing, restarting, sending/receiving data 
 					and setting passwords.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JSecure</span> is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
+					JSecure is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
 					the hooks as described in JClient/JServer it combines the two API to connect and communicate securely.
 				</p>
 			</div>
