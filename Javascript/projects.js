@@ -33,6 +33,7 @@ function PROJECTS_PAGE_LOAD() {
 					<div class="ProjectLinks JCodeBox2">
 						<h2><u>JCode - Libraries</u></h3>
 						<h3 onclick="Load_JScene()">JScene</h3>
+						<h3 onclick="Load_JCrypt()">JCrypt</h3>
 						<h3 onclick="Load_JRelay()">JRelay</h3>
 						<h3 onclick="Load_JNumbers()">JNumbers</h3>
 					</div>
@@ -109,6 +110,43 @@ function Load_JScene() {
 		</div>
 	`;
 }
+function Load_JCrypt() {
+	pageContent.innerHTML = `
+		<div id="ProjectDescription">
+			<div id="ProjectTitle">
+				` + Projects_leftarrow + `
+				<h1>JCrypt</h1>
+			</div>
+			<div id="ProjectInfo">
+				<p>
+					JCrypt is an cryptography API I made for encrypting/decrypting data with various modern or simple (a)symmetric cryptographic functions. All encryptions except 
+					ones used for key exchanging can be used in layered cycles for additional security.
+				</p>
+				<p>
+					For simple encryptions it has reverse, rotate right, rotate left, Ceasear cipher, and Vignere cipher. Here is a screenshot from a simple program, also used 
+					below, encrypting and decrypting the same message using a randomly generated key.
+				</p>
+				<img src="Images/projects/JCrypt/simpleexample.png"/>
+				<p>
+					For modern encryptions, JCrypt can encrypt and decrypt using both AES128 and AES256. Both are implemented using the AES-NI instruction set for modern Intel 
+					and AMD processors which <i>significantly</i> improves performance.
+				</p>
+				<img src="Images/projects/JCrypt/aesexample.png"/>
+				<p>
+					For modern key exchange encryption, JCrypt can use both RSA and Diffie-Hellman standards. Both can be used for encrypting and decrypting any individual message 
+					but due to the slower nature and practicality neither of them are not included in the general encryption structure like the examples above but can implemented 
+					easily for handshakes using their respective generate keys, encrypt, and decrypt functions. Both examples generate a 2048 bit key. Diffie-Hellman is unable to 
+					directly encrypt messages so the program generates all keys and calculates the shared secret using each respective key set.
+				</p>
+				<img src="Images/projects/JCrypt/rsaexample1.png"/>
+				<img src="Images/projects/JCrypt/rsaexample2.png"/>
+				<img src="Images/projects/JCrypt/rsaexample3.png"/><br>
+				<img src="Images/projects/JCrypt/dhexample1.png"/><br>
+				<img src="Images/projects/JCrypt/dhexample2.png"/>
+			</div>
+		</div>
+	`;
+}
 function Load_JRelay() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
@@ -116,6 +154,40 @@ function Load_JRelay() {
 				` + Projects_leftarrow + `
 				<h1>JRelay</h1>
 			</div>
+			<div id="ProjectInfo">
+				<p>
+					JRelay is a networking API that I made as part of JCode to handle all of the networking done with the projects I make. It's broken down into a few different parts so 
+					that I can quickly create simple applications or easily implement other types of socket communication like bluetooth, which I intended to implement later. The flowchart 
+					for JCode can be shown in a screenshot from one of the Makefiles for I use for building: 
+				</p>
+				<img src="Images/projects/JRelay/JCodeStructure.png" width="500px" height="200px">
+				<p>
+					JSecure is only 100% working with Linux currently. Everything <i>but</i> <a href="https://gmplib.org/">gmp</i> is compiled for Windows due to gmp being a bit tricky to 
+					use. For android everything compiles and runs on my android devices but it has a strange bug where randomly data drops or is intercepted by other data on the device. It 
+					has managed to connect <i>once</i> because none of the data was dropped. Everything is currently still in progress so this section will be updated soon.
+				</p>
+				<p>
+					<span style="color:var(--text-color-orange)">JNetwork</span> is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
+					packaging and caching.
+				</p>
+				<p>
+					<span style="color:var(--text-color-orange)">JSocket</span> resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
+					socket types are currently usable implementations. For all types of socket communication, sending, recveiving, and broadcating data are available. Data handled via typical 
+					methods e.g. blocked and timed or through polling. Additionally I've added other LAN functions for getting IP addresses/interfaces and port scanning. Port scanning has been 
+					implemented in 2 ways - One normal, timeout based scanning and a TCP-SYN scan similiar to nmap which is considerably faster but requires admin privileges.
+				</p>
+				<p>
+					<span style="color:var(--text-color-orange)">JClient and JServer</span> are TCP implementations using JSocket with function hooks for additional implemetation on top of 
+					each. For clients it handles safely connecting, disconnecting, sending/receiving data. For servers it handles safely starting, closing, restarting, sending/receiving data 
+					and setting passwords.
+				</p>
+				<p>
+					<span style="color:var(--text-color-orange)">JSecure</span> is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
+					the hooks as described in JClient/JServer it combines the two API to connect and communicate securely.
+				</p>
+			</div>
+
+			<!-- Update 1
 			<div id="ProjectInfo">
 				<p>
 					JRelay is a network application interface written C++ to try and make easier most of the communication when trying to integrate sockets in an application. It has 
@@ -129,6 +201,7 @@ function Load_JRelay() {
 					out <a onclick="Load_JTransmission()">JTransmission</a> for an application using JRelay. I've detailed most of it's usage there with examples. 
 				</p>
 			</div>
+			--!>
 		</div>
 	`;
 }
@@ -140,6 +213,14 @@ function Load_JNumbers() {
 				<h1>JNumbers</h1>
 			</div>
 			<div id="ProjectInfo">
+				<p>
+					Project update: While working on operation benchmarks I reconsidered how long it would take to fully implement secure prime number generation. I 
+					imagine it would have taken me around a month to do so; Up to 3 months at the max. I decided like would like to move on with the rest engine so 
+					I took another attempt at integrating <a href="https://gmplib.org/">GMP</a> into <a onclick="Load_JRelay()">JRelay</a> which was successful. I'm 
+					still keeping this part of the engine mostly for legacy reasons. As a final benchmark I generated 2 random 65536-bit 
+					(0 - <a href="https://sites.google.com/site/largenumbers/home/appendix/a/numbers/265536">A very big number</a>) numbers 
+					and multiplied them; I ran this 3 times and the operation took 37 seconds each time, using around 6% of my cpu. 
+				</p>
 				<p>
 					JNumbers is a large number library I created because I was unable to find a sufficent large number library that would work with my future projects 
 					in C++. Since speed is a <i>huge</i> part of my goal with this engine it was very important I find something that can be integrated well. This part
@@ -638,6 +719,9 @@ function Load_RPS() {
 					<a href="https://bigbangtheory.fandom.com/wiki/Rock,_Paper,_Scissors,_Lizard,_Spock">rock-paper-scissors-lizard-spock</a> or 
 					custom simulation conditions. Sometimes it, or at least it did at one point, results in an actual winner at larger values. My computer could handle team sizes of in the 
 					hundreds of thousands but as since it's unoptimized it <i>struggles</i> to produce a winner even at values 800 or so due to the screen bounds causing more overlap.
+				</p>
+				<p>
+					If you have an Android you can download it on <a href="https://play.google.com/store/apps/details?id=com.jcode.rpssimulator">Google Play</a>.
 				</p>
 				<p>
 					Just like my other programs, here are some screen caps and videos of the app running on my computer. Fun Fact! Since this app doesn't use anything for filesystems to store
