@@ -167,22 +167,22 @@ function Load_JRelay() {
 					should be fixed soon.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JNetwork</span> is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
+					JNetwork is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
 					packaging and caching.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JSocket</span> resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
+					JSocket resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
 					socket types are currently usable implementations. For all types of socket communication, sending, recveiving, and broadcating data are available. Data handled via typical 
 					methods e.g. blocked and timed or through polling. Additionally I've added other LAN functions for getting IP addresses/interfaces and port scanning. Port scanning has been 
 					implemented in 2 ways - One normal, timeout based scanning and a TCP-SYN scan similiar to nmap which is considerably faster but requires admin privileges.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JClient and JServer</span> are TCP implementations using JSocket with function hooks for additional implemetation on top of 
+					JClient and JServer are TCP implementations using JSocket with function hooks for additional implemetation on top of 
 					each. For clients it handles safely connecting, disconnecting, sending/receiving data. For servers it handles safely starting, closing, restarting, sending/receiving data 
 					and setting passwords.
 				</p>
 				<p>
-					<span style="color:var(--text-color-orange)">JSecure</span> is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
+					JSecure is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
 					the hooks as described in JClient/JServer it combines the two API to connect and communicate securely.
 				</p>
 			</div>
