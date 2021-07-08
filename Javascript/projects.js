@@ -162,9 +162,9 @@ function Load_JRelay() {
 				</p>
 				<img src="Images/projects/JRelay/JCodeStructure.png" width="500px" height="200px">
 				<p>
-					JSecure is only 100% working with Linux currently. Everything <i>but</i> <a href="https://gmplib.org/">gmp</i> is compiled for Windows due to gmp being a bit tricky to 
-					use. For android everything compiles and runs on my android devices but it has a strange bug where randomly data drops or is intercepted by other data on the device. It 
-					has managed to connect <i>once</i> because none of the data was dropped. Everything is currently still in progress so this section will be updated soon.
+					JSecure, currently the main focus of development right now, currently works 100% with Linux, 100% minus AES works for Android because I need to implement it for ARM 
+					processors, and somewhat on Windows. Windows will compile and run, clients even connect initially, but it refuses to continue (without errors which is frustrating). This 
+					should be fixed soon.
 				</p>
 				<p>
 					<span style="color:var(--text-color-orange)">JNetwork</span> is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
