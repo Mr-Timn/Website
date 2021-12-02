@@ -85,7 +85,8 @@ function Load_JScene() {
 				<p>
 					JScene is a cross-platform application engine, writting in C++, using the open source library SDL2 that I originally started as <i>Window.h</i> in my 
 					project, Lelantos. It is also the second verion of itself, the first version was originally paired with a game engine but I restructured 
-					it with the other parts of the engine in JCode (JRelay/JNumbers) and haven't offically decided to include the game engine with it. 
+					it with the other parts of the engine in JCode (JRelay/JNumbers) and haven't offically decided to include the game engine with it. It works with Linux, 
+					Windows 10, Android, and iOS.
 				</p>
 				<p>	
 					SDL2 handles most of the low level access and abstraction of devices, peripherals, and general 2D rendering. JScene optimizes SDL2's API to streamline 
@@ -128,21 +129,21 @@ function Load_JCrypt() {
 				</p>
 				<img src="Images/projects/JCrypt/simpleexample.png"/>
 				<p>
-					For modern encryptions, JCrypt can encrypt and decrypt using both AES128 and AES256. Both are implemented using the AES-NI instruction set for modern Intel 
-					and AMD processors which <i>significantly</i> improves performance.
+					For modern encryptions, JCrypt can encrypt and decrypt using both AES 128/192/256 and Serpent. AES has both a software and hardware implementation using the AES-NI 
+					instruction set for modern x86 processors which <i>significantly</i> improves performance.
 				</p>
 				<img src="Images/projects/JCrypt/aesexample.png"/>
 				<p>
-					For modern key exchange encryption, JCrypt can use both RSA and Diffie-Hellman standards. Both can be used for encrypting and decrypting any individual message 
-					but due to the slower nature and practicality neither of them are not included in the general encryption structure like the examples above but can implemented 
-					easily for handshakes using their respective generate keys, encrypt, and decrypt functions. Both examples generate a 2048 bit key. Diffie-Hellman is unable to 
-					directly encrypt messages so the program generates all keys and calculates the shared secret using each respective key set.
+					For modern key exchange encryption, JCrypt can use both RSA, Diffie-Hellman, and ECC standards. Here are the outputs for the generated keys that are 
+					generated. ECC can use the curves: P192, P224, P256, P384, P521, W25519, W448, Curve25519, Curve448, Edwards25519, Edwards448, E448, SECP192K1, SECP224K1, 
+					SECP256K1, SECP192R1, SECP224R1, SECP256R1, SECP384R1, SECP521R1.
 				</p>
 				<img src="Images/projects/JCrypt/rsaexample1.png"/>
 				<img src="Images/projects/JCrypt/rsaexample2.png"/>
 				<img src="Images/projects/JCrypt/rsaexample3.png"/><br>
 				<img src="Images/projects/JCrypt/dhexample1.png"/><br>
 				<img src="Images/projects/JCrypt/dhexample2.png"/>
+				<img src="Images/projects/JCrypt/eccexample.png"/>
 			</div>
 		</div>
 	`;
@@ -157,32 +158,21 @@ function Load_JRelay() {
 			<div id="ProjectInfo">
 				<p>
 					JRelay is a networking API that I made as part of JCode to handle all of the networking done with the projects I make. It's broken down into a few different parts so 
-					that I can quickly create simple applications or easily implement other types of socket communication like bluetooth, which I intended to implement later. The flowchart 
-					for JCode can be shown in a screenshot from one of the Makefiles for I use for building: 
-				</p>
-				<img src="Images/projects/JRelay/JCodeStructure.png" width="500px" height="200px">
-				<p>
-					JSecure, currently the main focus of development right now, currently works 100% with Linux, 100% minus AES works for Android because I need to implement it for ARM 
-					processors, and somewhat on Windows. Windows will compile and run, clients even connect initially, but it refuses to continue (without errors which is frustrating). This 
-					should be fixed soon.
+					that I can quickly create simple applications or easily implement other types of socket communication like bluetooth, which I intended to implement later.
 				</p>
 				<p>
-					JNetwork is the head namespace for JRelay (e.g. JCode::Network) and currently just contains the structures for data 
-					packaging and caching.
-				</p>
-				<p>
-					JSocket resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
+					<span style="color:var(--text-color-orange)">JSocket</span> resides within the Network namespace and contains all the handling for socket implementation. TCP and broadcast 
 					socket types are currently usable implementations. For all types of socket communication, sending, recveiving, and broadcating data are available. Data handled via typical 
 					methods e.g. blocked and timed or through polling. Additionally I've added other LAN functions for getting IP addresses/interfaces and port scanning. Port scanning has been 
 					implemented in 2 ways - One normal, timeout based scanning and a TCP-SYN scan similiar to nmap which is considerably faster but requires admin privileges.
 				</p>
 				<p>
-					JClient and JServer are TCP implementations using JSocket with function hooks for additional implemetation on top of 
+					<span style="color:var(--text-color-orange)">JClient and JServer</span> are TCP implementations using JSocket with function hooks for additional implemetation on top of 
 					each. For clients it handles safely connecting, disconnecting, sending/receiving data. For servers it handles safely starting, closing, restarting, sending/receiving data 
 					and setting passwords.
 				</p>
 				<p>
-					JSecure is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
+					<span style="color:var(--text-color-orange)">JSecure</span> is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
 					the hooks as described in JClient/JServer it combines the two API to connect and communicate securely.
 				</p>
 			</div>

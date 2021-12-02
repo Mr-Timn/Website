@@ -39,7 +39,7 @@ function ABOUT_PAGE_LOAD() {
 				<div class="TextDivider"></div>
 				<p class="aboutblock">
 					I'm currently a senior in <i>Computer Engineer</i> minoring in <i>Cyber Security</i> at Iowa State University.
-					Currently I work as a <i>High Process Computing Jr Systems Administrator</i> at Iowa State as a student employee.
+					Currently I work as a <i>High Performance Computing Jr Systems Administrator</i> at Iowa State as a student employee.
 					You can see the servers I work with <a href="https://www.hpc.iastate.edu/systems">here</a>.
 				</p>
 
