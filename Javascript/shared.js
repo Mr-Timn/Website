@@ -20,18 +20,16 @@ function LoadSharedContent() {
 		</div>
 
 		<div id="Navigation">
-			<div id="NavShade"></div>
-
-			<a href="https://github.com/Mr-Timn/Website"><img class="NavItem" onmousemove="NavRotateItem(this)" id="NavLogo" src="Images/nav/Logo3.png" alt="GitHub"/></a>
 			<div id="NavButtons">
+				<a href="https://github.com/Mr-Timn/Website">
+				<img class="NavItem"                                    onmousemove="NavRotateItem(this)" id="NavLogo"    src="Images/nav/Logo3.png"    alt="GitHub"/>
+				</a>
 				<img class="NavItem" onclick=NavButtonClick('INDEX')    onmousemove="NavRotateItem(this)" id="NavHome"    src="Images/nav/home.png"     alt="Home"     />
 				<img class="NavItem" onclick=NavButtonClick('ABOUT')    onmousemove="NavRotateItem(this)" id="NavAbout"   src="Images/nav/about.png"    alt="About"    />
 				<img class="NavItem" onclick=NavButtonClick('CONTACT')  onmousemove="NavRotateItem(this)" id="NavContact" src="Images/nav/contact.png"  alt="Contact"  />
 				<img class="NavItem" onclick=NavButtonClick('PROJECTS') onmousemove="NavRotateItem(this)" id="NavProject" src="Images/nav/projects.png" alt="Projects" />
 				<img class="NavItem" onclick=NavButtonClick('OTHER')    onmousemove="NavRotateItem(this)" id="NavOther"   src="Images/nav/other.png"    alt="Other"    />
 			</div>
-
-			<div class="NavItem" id="NavBorder"></div> 
 			
 			<div id="NavHoverText"><h3 id="NavHoverTextH3"></h3></div>
 		</div>
@@ -47,21 +45,31 @@ window.onload = function() {
 	windowRect = document.body.getBoundingClientRect();
 	
 	LoadSharedContent();
+	
+	navMenu = document.getElementById("Navigation");
 
 	NavInit();
 	VideoInit();
 	CanvasInit();
 	KeyboardInit();
-
+	
 	NavButtonClick("INDEX", true);
 
 	CanvasTick();
 }
 window.onresize = function() {
-	var diff = [ 
+	WindowResized();
+}
+window.onclick = function() {
+	if (clickHandler != null) clickHandler();
+}
+
+/*****  *****/
+function WindowResized() {
+	let diff = [ 
 		window.innerWidth - windowWidth,
 		window.innerHeight - windowHeight
-	]; 
+	];
 
 	windowWidth = window.innerWidth;
 	windowHeight = window.innerHeight;
@@ -70,20 +78,11 @@ window.onresize = function() {
 	ctx.canvas.width = windowWidth;
 	ctx.canvas.height = windowHeight;
 
-	document.getElementById("NavBorder").style.left = document.getElementById("NavShade").clientWidth + "px";
-
-	var navitems = document.getElementsByClassName("NavItem");
-	for (var i = 0; i < navitems.length; i++) {
-		var item = navitems[i];
-		if (item.id == "NavBorder") continue;
-		
-		item.style.height = item.clientWidth + "px";
-
-		if (item.id == "NavLogo") {
-			item.style.top = "var(--nav-start-logo)";
-		} else {
-			item.style.top = `calc(var(--nav-start-logo) + var(--nav-width) + (( ` + item.clientWidth + "px"  + ` + 10px ) * ` + i + `))`;
-		}
+	changeCSSProperty("--nav-height", "100vmax");
+	if (windowHeight > windowWidth) {
+		changeCSSProperty("--nav-width", "30vmin");
+	} else {
+		changeCSSProperty("--nav-width", "8vmax");
 	}
 
 	if (resizeHandler != null) resizeHandler(diff);
@@ -108,7 +107,7 @@ function relMouseY(Rect) {
 	return mouseY - Rect.y;
 }
 function ItemMouseOut(Item, ItemHandle, Delay) {
-	var elewaitmouseout = setInterval(() => {
+	let elewaitmouseout = setInterval(() => {
 		if (!(mouseX > Item.offsetLeft && mouseX < Item.offsetLeft + Item.offsetWidth) 
 		 || !(mouseY > Item.offsetTop  && mouseY < Item.offsetTop + Item.offsetHeight)) {
 			ItemHandle(Item);
@@ -159,7 +158,6 @@ function NavInit() {
 	});
 	
 	navHoverText = document.getElementById("NavHoverText");
-	navBorder = document.getElementById("NavBorder");
 }
 function NavRotateItem(Item) {
 	if (!rotateControl) return;
@@ -171,7 +169,6 @@ function NavRotateItem(Item) {
 	var rotateitem = setInterval(() => {
 		rotateval += 1;
 		Item.style.transform = "rotate(" + rotateval + "deg)";
-		
 		if (rotateval >= 35) clearInterval(rotateitem); 
 	}, 3);
 
@@ -182,9 +179,8 @@ function NavRotateItem(Item) {
 		navHoverText.style.top = (mouseY - 45) + "px";
 
 		// onmouseleave/out is inconsistent - doing this instead
-		if (mouseX > navBorder.offsetLeft || !(mouseY > Item.offsetTop && mouseY < Item.offsetTop + Item.offsetHeight)) {
+		if (mouseX > NavButtons.offsetWidth || !(mouseY > Item.offsetTop && mouseY < Item.offsetTop + Item.offsetHeight)) {
 			NavRotateUndo(rotatedItem, true);
-
 			rotateControl = true;
 			rotatedItem = null;
 		}
@@ -197,7 +193,6 @@ function NavRotateUndo(Item, Override) {
 	var rotateitem = setInterval(() => {
 		rotateval -= 1;
 		Item.style.transform = "rotate(" + rotateval + "deg)";
-		
 		if (rotateval <= 0) clearInterval(rotateitem); 
 	}, 4);
 
@@ -227,49 +222,20 @@ function NavSlideItem(Item, Delay) {
 }
 function NavSlideIn() {
 	var navitems = document.getElementsByClassName("NavItem");
-	var itemdelay = 100;
-
-	// Nav items animation
 	for (var i = 0; i < navitems.length; i++) {
 		var item = navitems[i];
-		if (item.id == "NavBorder") continue;
-		
-		item.style.height = item.clientWidth + "px";
-		
-		if (item.id == "NavLogo") {
-			item.style.top = "var(--nav-start-logo)";
-		} else {
-			item.style.top = `calc(var(--nav-start-logo) + var(--nav-width) + (( ` + item.clientWidth + "px"  + ` + 10px ) * ` + i + `))`;
-		}
-
-		NavSlideItem(item, i * itemdelay);
+		item.style.top = `calc( 10px + (((100vh / 7) + 10px) * ` + i + `))`;
+		NavSlideItem(item, i * 100);
 	}
-
-	// NavBorder animation
-	setTimeout(function() {
-		var navbar = document.getElementById("NavBorder");
-		navbar.style.left = document.getElementById("NavShade").clientWidth + "px";
-		
-		var extendvalue = 0, extendadj = 50;
-		var extendbar = setInterval(() => {
-			extendvalue += 2;
-			extendadj -= 1;
-
-			navbar.style.height = extendvalue + "%";
-			navbar.style.top = extendadj + "%";
-
-			if (extendvalue >= 100) clearInterval(extendbar);
-		}, 10);
-	}, 200); 
 }
 function NavButtonClick(Item, Override) {
-	if (Item == CURRENTPAGE) return;
+	if (Item == CURRENTPAGE || (!Override && !pageUnloaded)) return;
 
 	if (Override == null || !Override) {
 		window[CURRENTPAGE + "_PAGE_UNLOAD"]();
 		pageUnloaded = false;
 			
-		setTimeout(function() { //console.log("--New page ready--");
+		setTimeout(function() {
 			pageUnloaded = true;
 		}, pageUnloadTimer);
 	} else {
@@ -282,9 +248,13 @@ function NavButtonClick(Item, Override) {
 			keyDownHandle = null,
     		keyUpHandle = null;
 			scrollHandler = null;
+			clickHandler = null;
+			canvasHandle = null;
 			
 			pageContent.innerHTML = "";
 			
+			WindowResized();
+
 			window[Item + "_PAGE_LOAD"]();
 			
 			CURRENTPAGE = Item;
@@ -341,10 +311,24 @@ function CanvasInit() {
 }
 function CanvasTick() {
 	ctx.clearRect(0, 0, windowWidth, windowHeight);
-
 	if (canvasHandle != null) canvasHandle();
-
 	requestAnimationFrame(CanvasTick);
+}
+function CanvasCreateImage(Src, Width, Height) {
+	img = new Image();
+	img.src = Src;
+	if (Width != null) img.width = Width;
+	if (Height != null) img.height = Height;
+	return img;
+}
+function CanvasAddImage(Src, Width, Height) {
+	var img = new CanvasCreateImage(Src, Width, Height);
+
+	canvasImages.push({
+		"img": img,
+		"width": Width,
+		"height": Height
+	});
 }
 
 /***** Other ******/
@@ -381,4 +365,37 @@ function HueToRGB(H, A) {
 		b: (B + m) * 255.0,
 		a: A
 	};
+}
+function RandomLetter() {
+	if (Math.floor(Math.random() * 2) == 1) 
+		return String.fromCharCode(Math.floor(Math.random() * 25) + 65); // A - Z [ 65 - 90 ]
+	else 
+		return String.fromCharCode(Math.floor(Math.random() * 25) + 97); // a - z [ 97 - 122 ]
+} 
+function RandomText(Text, PreserveSpace) {
+	var rtxt = "";
+	for (var i = 0; i < Text.length; i++) {
+		if (PreserveSpace && Text[i] == " ") rtxt += " ";
+		else rtxt += RandomLetter();
+	}
+	return rtxt;
+}
+
+function GetElementX(Element) {
+	return document.getElementById(Element).offsetLeft;
+}
+function GetElementY(Element) {
+	return document.getElementById(Element).offsetTop;
+}
+function GetElementWidth(Element) {
+	return document.getElementById(Element).offsetWidth;
+}
+function GetElementHeight(Element) {
+	return document.getElementById(Element).offsetHeight;
+}
+function GetElementXWidth(Element) {
+	return GetElementX(Element) + GetElementWidth(Element);
+}
+function GetElementYHeight(Element) {
+	return GetElementY(Element) + GetElementHeight(Element);
 }

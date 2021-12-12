@@ -589,7 +589,7 @@ function INDEX_PAGE_LOAD() {
 	user_message = [
 		{ text: "", align: "center" }
 	];
-
+	
 	motd_letters.generatecoords();
 }
 */

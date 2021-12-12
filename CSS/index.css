@@ -2,27 +2,23 @@
     Made by Jordan Hoosman
 */
 
-:root {
-	/* Handled in index.js - Here for reference */
-	--ll-buffer: 1vmin;
-    --ll-top: 1vmin;
-    --ll-size: 48.5vmin;
-    --ll-bottom: 50.5vmin;
-	--ll-left: calc(var(--nav-width) + 1vmin);
-}
-
 #LargeLinks {
     z-index: 5;
-
     position: absolute;
+	
+	top: calc(var(--ll-top));
+	left: calc(var(--ll-left));
+	width: calc(2 * var(--ll-width) + var(--ll-buffer));
+	height: calc(2 * var(--ll-width) + var(--ll-buffer));
 }
 .LL {
     z-index: 5;
-    
     position: fixed;
-    width: var(--ll-size);
-    height: var(--ll-size);
+
 	top: calc(-1 * var(--ll-size) - 5px);
+	left: var(--ll-left);
+    width: var(--ll-width);
+    height: var(--ll-height);
 
     border: 1px solid;
     border-color: white;
@@ -53,18 +49,21 @@
     left: calc(var(--ll-left));
 }
 .LLRight {
-    left: calc(var(--ll-left) + var(--ll-size) + var(--ll-buffer));
+    left: calc(var(--ll-left) + var(--ll-width) + var(--ll-buffer));
 }
 
 #LLCraneGIF, #LLCraneGIFcpy {
     position: absolute;
-
+	
+	top: 10px;
+    left: calc(80% - 75px);
     width: 75px;
     height: 75px;
-
-    top: 10px;
-    left: calc(80% - 75px);
 }
+#LLCraneGIFcpy {
+	opacity: 0.0;
+}
+
 #LLPianoShadow {
     width: 300px;
     height: 140px;
@@ -123,4 +122,21 @@
 
     color: white;
     border-left: 1px solid;
+}
+
+#WelcomeAnimation {
+	z-index: 9;
+	position: absolute;
+	color: white;
+}
+.WAText {
+	overflow-wrap: anywhere;
+	text-align: center;
+}
+#WAText1 {
+	margin-top: 10px;
+}
+#WAText2 {
+	position: absolute;
+	bottom: 5px;
 }

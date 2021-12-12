@@ -48,24 +48,11 @@ function CONTACT_PAGE_UNLOAD() {
 	pageUnloadTimer = 2250;
 }
 
-function Contact_RandomLetter() {
-	if (Math.floor(Math.random() * 2) == 1) 
-		return randletter = String.fromCharCode(Math.floor(Math.random() * 25) + 65); // A - Z [ 65 - 90 ]
-	else 
-		return randletter = String.fromCharCode(Math.floor(Math.random() * 25) + 97); // a - z [ 97 - 122 ]
-} 
-function Contact_RandomText(Text) {
-	var rtxt = "";
-	for (var i = 0; i < Text.length; i++) {
-		rtxt += Contact_RandomLetter();
-	}
-	return rtxt;
-}
 function Contact_CipherText() {
 	var contactinfo = document.getElementById("ContactInfo");
 
 	for (var i = 0; i < contact_data.length; i++) {
-		contact_data[i].cipher = Contact_RandomText(contact_data[i].val);
+		contact_data[i].cipher = RandomText(contact_data[i].val);
 		
 		contactinfo.innerHTML += `
 			<div class="contact">
@@ -91,7 +78,7 @@ function Contact_CipherText() {
 			var cdata = document.getElementById("contactdata" + cdatai);
 			
 			if (cdatam == 0) {
-				cpy = (cpy.substring(0, cdataj - 1) + Contact_RandomLetter() + cpy.substring(cdataj));
+				cpy = (cpy.substring(0, cdataj - 1) + RandomLetter() + cpy.substring(cdataj));
 				cdata.innerHTML = cpy;
 			} else if (cdatam == 1) {
 				cpy = contact_data[cdatai].cipher.substring(0, cdataj) + contact_data[cdatai].val.substring(cdataj);
@@ -112,10 +99,11 @@ function Contact_CipherText() {
 
 				cpy = contact_data[cdatai].cipher;
 			} else if (cdatam == 1 && (cdataj -= 1) < 0) {
-				cdata.innerHTML = 
-					(contact_data[cdatai].link == null ? `` : `<a href="` + contact_data[cdatai].link + `">`) 
+				cdata.innerHTML = (
+					contact_data[cdatai].link == null ? `` : `<a href="` + contact_data[cdatai].link + `">`) 
 					+ (contact_data[cdatai].val) 
-					+ (contact_data[cdatai].link == null ? `` : `</a>`);
+					+ (contact_data[cdatai].link == null ? `` : `</a>`
+				);
 
 				if ((cdatai += 1) >= contact_data.length) {
 					cdatai = 0;
@@ -142,7 +130,7 @@ function Contact_RemoveText() {
 		var ctitle = document.getElementById("contacttitle" + cdatai);
 
 		if (cdatam == 0) {
-			cpy = (cpy.substring(0, cdataj - 1) + Contact_RandomLetter() + cpy.substring(cdataj));
+			cpy = (cpy.substring(0, cdataj - 1) + RandomLetter() + cpy.substring(cdataj));
 			cdata.innerHTML = cpy;
 		} else if (cdatam == 1) {
 			cpy = contact_data[cdatai].cipher.substring(0, cdataj);

@@ -2,6 +2,10 @@
 // Made by Jordan Hoosman
 //
 
+const PI_D4 = Math.PI / 4;
+const PI_D8 = Math.PI / 8;
+
+/// ///
 var DEBUG = true;
 var windowWidth, 
     windowHeight, 
@@ -15,8 +19,9 @@ var pageContent,
     pageUnloaded = false;
 
 /// Navigation ///
+var navMenu = null;
 var numNavItems = 6;
-var navBorder;
+var navBuffer;
 
 /// Mouse ///
 var mevents,
@@ -27,6 +32,7 @@ var navHoverText,
 var scrollHandler;
 var rotateControl = true,
     rotatedItem = null;
+var clickHandler = null;
 
 /// Keyboard ///
 var keyDownHandle = null,
@@ -43,4 +49,5 @@ var backgroundVideo;
 /// Background Canvas ///
 var canvas, 
     ctx,
-    canvasHandle = null;
+    canvasHandle = null,
+	canvasImages = [];

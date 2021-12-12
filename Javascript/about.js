@@ -103,7 +103,7 @@ function ABOUT_PAGE_LOAD() {
 					My favorite thing to make is various western dragons and angels. I've been playing piano for around 7 years now. I'm not 
 					incredibly good at it but I can play Chopin's Nocturne Op. 2 No. 1 and 2; As well as Beethoven's Moonlight 
 					Sonata Mov. 1 and Pathetique 2nd movement. My girlfriend is an Animal Ecologist at Iowa State and loves to 
-					bird! She has over 400 species seen and currently ranked the 94th birder in Iowa on ebird. I follow at #506 but 
+					bird! She has over 400 species seen and currently ranked the 94th birder in Iowa on ebird. I follow at #239 but 
 					mostly because of her! You can see some of the pictures she took; Including one of our favorites, a Killdeer, in the background. Watch, they'll
 					say hello to you!
 				</p>
@@ -143,12 +143,11 @@ function ABOUT_PAGE_LOAD() {
 				<p class="aboutblock">
 					After working through many projects I decided to make an attempt at creating an engine to streamline projects between programs on all of my devices. The 
 					engine consists of a few different parts. One is a cross-enginge application manager called <a onclick="LinkTo_JScene()">JScene</a>. It's built off of the 
-					open source API SDL2. JScene uses it's functions to help organize and manage resources in it's usage as well as speeding up the process of making it 
-					functional. Another API I made is called <a onclick="LinkTo_JRelay()">JRelay</a>. It can be used stand alone to handle network connections for an applications 
-					or in conjunction with JScene for a project. Severs can be password protected and encrypted. At the time of writing this JNumbers has been written but not 
-					integrated into JRelay. <a onclick="LinkTo_JNumbers()">JNumbers</a> is a large number library to do calcuations for that ever you want. It can perform all basic 
-					math operations and (also currently unoptimized) prime number generation. Since all of the API's are still in development it's hard to describe <i>briefly</i> 
-					so if you're curious check out the <a onclick=NavButtonClick('PROJECTS')>Projects</a> page or above links for a full description of each.
+					open source API SDL2. JScene uses it's functions to help organize and manage resources in it's usage as well as speeding up the process of making it functional. 
+					It also is capable of processing video with ffmpeg. Another API I made is called <a onclick="LinkTo_JRelay()">JRelay</a>. It can be used stand alone to handle 
+					network connections for an applications or in conjunction with JScene for a project. JCrypt is my cryptography engine. It uses GMP large number arthimetic and 
+					has most modern standerds like RSA, Diffie-Hellman, and ECDH. 
+					Check out the <a onclick=NavButtonClick('PROJECTS')>Projects</a> page or above links for a full description of each.
 				</p>
 			</div>
 		</div>

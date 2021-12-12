@@ -14,18 +14,21 @@
 //   - Moving code to 000archive.js
 
 
-var lldelay = 0;
-var lltop = 1;
-var llbuffer = 1; // Middle buffer
-var llsize = 48.5;  // (100 - ((lltop*2) + llbuffer)) / 2
-var llbottom = 50.5; // lltop + llbuffer + llsize
+var lltop, llbuffer, llwidth, llheight;
 
-var indexItemsSettled, 
-	hoveredLL, hoveredLLHold, 
-	maxNotes, 
-	maxMail,
-	maxLightningBalls;
 var llcanvashandle = null;
+var lltitle, llabout, llcontact, llprojects;
+var indexItemsSettled, hoveredLL, hoveredLLHold;
+
+const maxNotes = 15;
+const maxMail = 30;
+const maxLightningBalls = 11;
+
+const MESSAGES = [
+	{ font: [ 45, 90 ], c: "", l: "",        m: "Welcome to my website!" },
+	{ font: [ 30, 55 ], c: "", l: "SUMMARY", m: "If you want to see a short intro/animation of who I am click here!" },
+	{ font: [ 12, 25 ], c: "", l: "",        m: "[Hint] Hover your mouse over each box and see what happens!" }
+];
 
 var cranepos = { x: 0, y: 0, flap: true };
 var seqdataobj = { 
@@ -37,12 +40,8 @@ var seqdataobj = {
 };
 
 var snake = null;
-var lbcontrol = {
-	ox: 0, oy: 0
-};
-
-var lightningballs = [];
-var lightningballimg = [];
+var lbcontrol = { ox: 0, oy: 0 };
+var lightningballs = [], lightningballimg = [];
 
 /***** Page Loading *****/
 function INDEX_PAGE_LOAD() {
@@ -89,22 +88,26 @@ function INDEX_PAGE_LOAD() {
 				<div id="LLLightningBalls"></div>
 
 				<div class="LLTitle" onclick=NavButtonClick('OTHER')><h3>Other</h3></div>
-			</div>	
+			</div>
 		</div>
-		
-		<div id="LLDiv"></div>	
+
+		<div id="WelcomeAnimation"></div>
 	`;
+
+	lltitle = document.getElementsByClassName("LLTitle")[0];
+	llabout = document.getElementById("LLAbout");
+	llcontact = document.getElementById("LLContact");
+	llprojects = document.getElementById("LLProjects");
+	llother = document.getElementById("LLOther");
 
 	indexItemsSettled = 0;
 	hoveredLL = "";
 	hoveredLLHold = false;
-	maxNotes = 15;
-	maxMail = 30;
-	maxLightningBalls = 11;
 
 	resizeHandler = Index_ResizeHandle;
-	canvasHandle = Index_WelcomeAnimation;
-	
+	canvasHandle = Index_Canvas;
+
+	Index_Welcome_Animation();
 	Index_ResizeHandle(0);
 	Index_SlideIn();
 }
@@ -119,24 +122,94 @@ function INDEX_PAGE_UNLOAD() {
 }
 
 function Index_ResizeHandle(Diff) {
-	changeCSSProperty("--ll-size"  , llsize   + "vmin");
-	changeCSSProperty("--ll-top"   , lltop    + "vmin");
-	changeCSSProperty("--ll-bottom", llbottom + "vmin");
-	changeCSSProperty("--ll-left"  , "calc(" + document.getElementById("Navigation").clientWidth + "px + 2vmin)");
+	let wa = document.getElementById("WelcomeAnimation");
+	
+	llbuffer = 1;
+	if (windowHeight > windowWidth) {
+		lltop    = 30;
+		llwidth  = 100;
+		llheight = 48.5;
+
+		wa.style.top    = "10px";
+		wa.style.left   = "calc(var(--nav-width) + 2vmin)";
+		wa.style.width  = "100vmin";
+		wa.style.height = "270px";
+
+		llother.className = "LL LLeft";
+		llcontact.className = "LL LLLeft";
+
+		for (var i = 0; i < MESSAGES.length - 1; i++) document.getElementById("WAText" + i).style.fontSize = MESSAGES[i].font[1] + "px";
+	} else {
+		lltop    = 1;
+		llwidth  = 48.5;
+		llheight = 48.5;
+
+		wa.style.top = "100px";
+		wa.style.left = "calc(var(--nav-width) + (2 * (var(--ll-width) + var(--ll-buffer))) )";
+		wa.style.width = "calc(" + windowWidth + "px - (var(--ll-left) + 100vmin))";
+		wa.style.height = "calc(100% - 100px)";
+
+		llother.className = "LL LLRight";
+		llcontact.className = "LL LLRight";
+
+		for (var i = 0; i < MESSAGES.length - 1; i++) document.getElementById("WAText" + i).style.fontSize = MESSAGES[i].font[0] + "px";
+	}
+	
+	changeCSSProperty("--ll-buffer" , "1vmin");
+	changeCSSProperty("--ll-width"  , llwidth  + "vmin");
+	changeCSSProperty("--ll-height" , llheight + "vmin");
+	changeCSSProperty("--ll-top"    , lltop    + "vmin");
+	changeCSSProperty("--ll-left"   , "calc(var(--nav-width) + 2vmin)");
+}
+
+/***** Welcome *****/
+function Load_Message(n) {
+	var msg = document.getElementById("WAText" + n);
+	var s = 0, t = 0, len = MESSAGES[n].m.length;
+
+	var growmsg = setInterval(function() {
+		if (s++ >= len) {
+			var fixmsg = setInterval(function() {
+				if (t++ == len) clearInterval(fixmsg);
+				msg.innerHTML = MESSAGES[n].m.substring(0, t) + MESSAGES[n].c.substring(t + 1);
+			}, 20);
+			clearInterval(growmsg); 
+		}
+
+		msg.innerHTML = MESSAGES[n].c.substr(0, s);
+	}, 15);
+}
+function Index_Welcome_Animation() {
+	for (var i = 0; i < MESSAGES.length; i++) {
+		document.getElementById("WelcomeAnimation").innerHTML += `
+			<div class="WAText" onclick="NavButtonClick('` + MESSAGES[i].l + `', false)" id="WAText` + i + `"><h` + (i + 1) + ` ></h` + (i + 1) + `></div>
+		`;
+		
+		MESSAGES[i].c = RandomText(MESSAGES[i].m, true);
+		if (MESSAGES[i].l != "") {
+			let link = document.getElementById("WAText" + i);
+			link.style.cursor = "pointer";
+		}
+	}
+
+	setTimeout(function() { Load_Message(0); }, 100);
+	setTimeout(function() { Load_Message(1); }, 350);
+	setTimeout(function() { Load_Message(2); }, 600);
 }
 
 /***** LargeLink Mouse Handles *****/
 function Index_LLMouseIn(Item, Modifier) {
 	if (Modifier == 0 || indexItemsSettled != 4) return;
 
-	var blowupbox = document.getElementById(Item);
+	if (Modifier == -1) hoveredLL = "";
+	else hoveredLL = Item;
+
+	/*var blowupbox = document.getElementById(Item);
 	var blowupmode = 0;
 	var dogrow = Modifier == 1;
 	var blowupval = dogrow ? 0 : 70;
 	var leftoffset, topoffset, oriwidth, oriheight, status;
 	
-	// Disabling/commenting out for stability
-	// If reenabled, scrnadj interval needs to be fixed
 	if (Modifier > 0) {
 		if (blowupbox.style.alt == null || blowupbox.style.alt == "") {
 			leftoffset = (blowupbox.offsetLeft / windowWidth) * 100;
@@ -185,7 +258,7 @@ function Index_LLMouseIn(Item, Modifier) {
 				/*blowupbox.style.width = oriwidth + "%";
 				blowupbox.style.height = oriheight + "%";
 				blowupbox.style.left = leftoffset + "%";
-				blowupbox.style.top = topoffset + "%";*/
+				blowupbox.style.top = topoffset + "%";* /
 				blowupbox.style.alt = null;
 				
 				if (hoveredLL == Item) hoveredLL = "";
@@ -197,8 +270,8 @@ function Index_LLMouseIn(Item, Modifier) {
 		/*blowupbox.style.width = "calc(" + oriwidth + "% + " + blowupval + "px)";
 		blowupbox.style.height = "calc(" + oriheight + "% + " +  blowupval + "px)";
 		blowupbox.style.left = "calc(" + leftoffset + "% - " + (blowupval / 2) + "px)";
-		blowupbox.style.top = "calc(" + topoffset + "% - " + (blowupval / 2) + "px)";*/
-	}, 5);
+		blowupbox.style.top = "calc(" + topoffset + "% - " + (blowupval / 2) + "px)";* /
+	}, 5);*/
 }
 function Index_LLMouseOut(Item) {
 	Index_LLMouseIn(Item.id, -1);
@@ -208,12 +281,16 @@ function Index_LLMouseOut(Item) {
 function Index_SlideInElement(Item, IsTop, Delay, Modifier) {
 	var ele = document.getElementById(Item);
 
-	var abspos = IsTop ? lltop : llbottom;
-	
 	var slidein = Modifier == 1;
-	var topgoal = abspos;
-	var topvalue = slidein ? (-2 * llsize - 5) : 0;
 	var mode = slidein ? 1 : 3;
+	
+	var topgoal;
+	if (windowHeight > windowWidth)
+		topgoal = lltop + (Delay * (llheight + llbuffer));
+	else 
+		topgoal = IsTop ? lltop : lltop + (llheight + llbuffer);
+	
+	var topvalue = slidein ? ((-2 * llheight) - 5) : 0;
 
 	setTimeout(function() {
 		var topslide = setInterval(() => {
@@ -244,25 +321,34 @@ function Index_SlideInElement(Item, IsTop, Delay, Modifier) {
 				clearInterval(topslide);
 			}
 		}, 10);
-	}, Delay);
+	}, 3 * Delay * 80);
 }
 function Index_SlideIn() { 
 	indexItemsSettled = 0;
 
-	Index_SlideInElement("LLOther"   , false, lldelay + 0  , 1);
-	Index_SlideInElement("LLProjects", false, lldelay + 300, 1);
-	Index_SlideInElement("LLContact" , true , lldelay + 600, 1);
-	Index_SlideInElement("LLAbout"   , true , lldelay + 900, 1);
+	Index_SlideInElement("LLOther"   , false, 3, 1);
+	Index_SlideInElement("LLProjects", false, 2, 1);
+	Index_SlideInElement("LLContact" , true , 1, 1);
+	Index_SlideInElement("LLAbout"   , true , 0, 1);
 
-	Index_AboutAnimation();
+	Index_Animation();
 }
 function Index_SlideOut() {
 	indexItemsSettled = 0;
 
-	Index_SlideInElement("LLAbout"   , true , 0  , -1.75);
-	Index_SlideInElement("LLContact" , true , 100, -1.75);
-	Index_SlideInElement("LLProjects", false, 200, -1.75);
-	Index_SlideInElement("LLOther"   , false, 300, -1.75);
+	Index_SlideInElement("LLAbout"   , true , 3, -1.75);
+	Index_SlideInElement("LLContact" , true , 2, -1.75);
+	Index_SlideInElement("LLProjects", false, 1, -1.75);
+	Index_SlideInElement("LLOther"   , false, 0, -1.75);
+}
+
+/***** Mail Letters *****/
+function MailLetter(X, Y, VX) {
+	this.x = X,
+	this.y = Y,
+	this.vx = VX,
+	this.vy = (Math.random() * 2 + 1),
+	this.s = (Math.random() * (2 * Math.PI))
 }
 
 /***** Lightning Balls *****/
@@ -341,7 +427,7 @@ function Index_LightningStrike(obj, mposx, mposy, mrelx, mrely, mdirabs) {
 	}
 }
 function Index_LightningBalls() {
-	var llother = document.getElementById("LLOther");
+	llother = document.getElementById("LLOther");
 	var llorect = llother.getBoundingClientRect();
 
 	if (hoveredLL == "LLOther") {
@@ -356,25 +442,21 @@ function Index_LightningBalls() {
 		for (var i = 0; i < lightningballs.length; i++) {
 			var tlb = lightningballs[i];
 
-			var mrelx = mposx - (tlb.x + (60/2));
-			var mrely = mposy - (tlb.y + (60/2)); //console.log(mrelx + " - " + mrely);
+			var mrelx = mposx - (tlb.x + (60 / 2));
+			var mrely = mposy - (tlb.y + (60 / 2));
 			var mabsx = Math.abs(mrelx);
-			var mabsy = Math.abs(mrely); //console.log(mabsx + " - " + mabsy);
-			var mdirabs = Math.sqrt((mabsx * mabsx) + (mabsy * mabsy)); //console.log(mdirabs);
+			var mabsy = Math.abs(mrely);
+			var mdirabs = Math.sqrt((mabsx * mabsx) + (mabsy * mabsy));
 
-			if (mdirabs < 100) {
-				Index_LightningStrike(tlb, mposx, mposy, mrelx, mrely, mdirabs);
-			}
-
+			if (mdirabs < 100) Index_LightningStrike(tlb, mposx, mposy, mrelx, mrely, mdirabs);
+			
 			if ((tlb.frame += 1) >= 120) tlb.frame = 0;
 
 			tlb.x += tlb.vx;
 			tlb.y += tlb.vy;
 			
-			if (tlb.x < 0) tlb.x = llorect.width - 80;
-			else if (tlb.x > llorect.width - 80) tlb.x = 0;
-			if (tlb.y < 0) tlb.y = llorect.height - 80;
-			else if (tlb.y > llorect.height - 80) tlb.y = 0;
+			if (tlb.x < 0) tlb.x = llorect.width  - 80; else if (tlb.x > llorect.width  - 80) tlb.x = 0;
+			if (tlb.y < 0) tlb.y = llorect.height - 80; else if (tlb.y > llorect.height - 80) tlb.y = 0;
 
 			ctx.drawImage(lightningballimg[tlb.frame], lbcontrol.ox + tlb.x, lbcontrol.oy + tlb.y, 60, 60);
 		}
@@ -386,280 +468,233 @@ function Index_LightningBalls() {
 
 /***** Pet Snake *****/
 function Snake() {
-	this.x = 0; 
-	this.y = 0; 
-	this.ox = 0; 
-	this.oy = 0; 
-	this.dw = 0; 
-	this.dh = 0;
 	this.body = [ ]; 
 	this.food = { x: 0, y: 0 };
 	this.color = 0;
-	this.boundw = 0; 
-	this.boundh = 0; 
 	this.dir = { x: 0, y: 0, l: 1 }; 
 	this.lagam = 2; 
 	this.lagct = 0;
+	
 	this.diddraw = false;
+	
+	this.screen = { id: "LLProjects", x: 0, y: 0, w: 0, h: 0 };
+	this.x = 0; 
+	this.y = 0;
+	this.dw = 0; 
+	this.dh = 0;
+	this.srad = 30;
 	
 	this.behavior = {
 		mode: 0,
 		getfood: false,
-		mid: { x: 0, y: 0 },
 		deg: 0,
 		off: 0
 	}
-}
-function Index_SnakeHandle() {
-	if (hoveredLL == "LLProjects") {
-		var llproj = document.getElementById("LLProjects");
-		var snakebounds = llproj.getBoundingClientRect();
-		snake.boundw = snakebounds.width;
-		snake.boundh = snakebounds.height;			
-		snake.ox = snakebounds.left - windowRect.left;
-		snake.oy = snakebounds.top - windowRect.top;
-		snake.dw = snake.boundw / 50;
-		snake.dh = snake.boundh / 50;
 
-		var mposx = relMouseX(snakebounds);
-		var mposy = relMouseY(snakebounds);
-		var mrelx = mposx - snake.x;
-		var mrely = mposy - snake.y;
-		var mabsx = Math.abs(mrelx);
-		var mabsy = Math.abs(mrely); 									//console.log(mabsx + " - " + mabsy);
-		var mdirabs = Math.sqrt((mabsx * mabsx) + (mabsy * mabsy)); 	//console.log(mdirabs);
+	this.drawsquare = function(p) {
+		ctx.fillRect(Math.ceil(this.screen.x + p.x), Math.ceil(this.screen.y + p.y), Math.ceil(this.dw), Math.ceil(this.dh));
+	}
+	this.drawbody = function() {
+		this.color = (this.color + 1) % 360;
 
-		switch (snake.behavior.mode) {
+		let scolor = HueToRGB(this.color, 255);
+		ctx.fillStyle = "rgba(" + scolor.r + ", " + scolor.g + ", " + scolor.b + ", " + scolor.a + ")";
+
+		for (var i = this.body.length - 1; i > 0; i--) {
+			this.body[i].x = this.body[i - 1].x;
+			this.body[i].y = this.body[i - 1].y;
+			this.drawsquare(this.body[i]);
+		}
+		this.body[0].x = this.x;
+		this.body[0].y = this.y;
+		this.drawsquare(this.body[0]);
+	
+		if (this.behavior.getfood) this.drawsquare(this.food);
+	}
+	this.drawhead = function() {
+		this.drawsquare(this);
+	}
+	this.updatescreen = function() {
+		this.screen.x = GetElementX(this.screen.id);
+		this.screen.y = GetElementY(this.screen.id);
+		this.screen.w = GetElementWidth(this.screen.id);
+		this.screen.h = GetElementHeight(this.screen.id);
+		this.screen.xw = this.screen.x + this.screen.w;
+		this.screen.yh = this.screen.y + this.screen.h;
+		
+		this.dw = this.screen.w / 50;
+		this.dh = this.screen.h / 50;
+	}
+	this.checkbounds = function() {
+		if (this.x > this.screen.w - this.dw) this.x = 0; else if (this.x < 0) this.x = this.screen.w - this.dw;
+		if (this.y > this.screen.h - this.dh) this.y = 0; else if (this.y < 0) this.y = this.screen.h - this.dh;
+	}
+	this.think = function() {
+		let mposx, mposy, mabsx, mabsy, mdirabs;
+
+		switch (this.behavior.mode) {
+			/// Seek ///
 			case 0: {
-				if (snake.behavior.getfood) {
-					mposx = snake.food.x;
-					mposy = snake.food.y;
-					mabsx = Math.abs(mposx - snake.x);
-					mabsy = Math.abs(mposy - snake.y);
-					mdirabs = Math.sqrt(mabsx, 2) + Math.sqrt(mabsy, 2); //console.log(mdirabs);
+				// Find food
+				if (this.behavior.getfood) {
+					mposx = this.x - this.food.x;
+					mposy = this.y - this.food.y;
+					mabsx = Math.abs(mposx);
+					mabsy = Math.abs(mposy);
 
-					snake.dir.l = mabsx > mabsy ? 1 : 2;
-
-					if (mdirabs <= 6) {
-						snake.behavior.mode = 1;
-						snake.behavior.getfood = false;
-
-						snake.body.push({ x: snake.x, y: snake.y });
+					this.dir.l = mabsx > mabsy ? 1 : 2;
+					if (Math.sqrt((mabsx * mabsx) + (mabsy * mabsy)) <= 6) {
+						this.behavior.mode = 1;
+						this.behavior.getfood = false;
+						this.body.push({ x: this.x, y: this.y });
 					}
+				// Find mouse
 				} else {
-					if (mdirabs > 50) {
-						snake.dir.l = mabsx > mabsy ? 1 : 2;
-					} else {
-						snake.dir.l = 0;
-						snake.behavior.mode = 1;
+					mposx = relMouseX(this.screen);
+					mposy = relMouseY(this.screen);
+					mabsx = Math.abs(mposx - this.x);
+					mabsy = Math.abs(mposy - this.y);
+					mdirabs = Math.sqrt((mabsx * mabsx) + (mabsy * mabsy));
+
+					if (mdirabs > 50) this.dir.l = mabsx > mabsy ? 1 : 2;
+					// Idle
+					else {
+						this.dir.l = 0;
+						this.behavior.mode = 1;
 					}
 				}
 				
-				if (snake.dir.l == 1) {
+				// Move to position
+				if (this.dir.l == 1) {
 					// Direction
-					if (snake.x < mposx) snake.dir.x = 0; else if (snake.x > mposx) snake.dir.x = 1; 
+					if (this.x < mposx) this.dir.x = 0; else if (this.x > mposx) this.dir.x = 1;
 					// Move
-					if (snake.dir.x == 0) snake.x += snake.dw; else snake.x -= snake.dw;
-				} else if (snake.dir.l == 2) {
+					if (this.dir.x == 0) this.x += this.dw; else this.x -= this.dw;
+				} else if (this.dir.l == 2) {
 					// Direction
-					if (snake.y < mposy) snake.dir.y = 0; else if (snake.y > mposy) snake.dir.y = 1;
+					if (this.y < mposy) this.dir.y = 0; else if (this.y > mposy) this.dir.y = 1;
 					// Move
-					if (snake.dir.y == 0) snake.y += snake.dh; else snake.y -= snake.dh;
+					if (this.dir.y == 0) this.y += this.dh; else this.y -= this.dh;
 				}
 
 				break;
 			}
+			/// Idle ///
 			case 1: {
+				mposx = relMouseX(this.screen);
+				mposy = relMouseY(this.screen);
+				mabsx = Math.abs(mposx - this.x);
+				mabsy = Math.abs(mposy - this.y);
+				mdirabs = Math.sqrt((mabsx * mabsx) + (mabsy * mabsy));
+
 				if (mdirabs > 80) {
-					snake.behavior.mode = 0;
+					this.behavior.mode = 0;
 				} else {
-					if ((snake.behavior.deg += (Math.PI / 10)) >= 2 * Math.PI) snake.behavior.deg = 0;
-
-					snake.behavior.mid = { x: mposx / snake.dw , y: mposy / snake.dh };
+					if ((this.behavior.deg += (Math.PI / 10)) >= 2 * Math.PI) this.behavior.deg = 0;
 					
-					var sdeg = snake.behavior.deg; //console.log(sdeg);
-					var smid = snake.behavior.mid; //console.log(smid);
-					var srad = 30;
-
-					var spinx = (smid.x * snake.dw) + (Math.cos(sdeg) * srad);
-					var spiny = (smid.y * snake.dh) + (Math.sin(sdeg) * srad);
-
-					//ctx.fillRect(snake.ox + spinx, snake.oy + spiny, snake.dw, snake.dw);
-					//ctx.strokeStyle = "rgba(" + scolor.r + ", " + scolor.g + ", " + scolor.b + ", " + scolor.a + ")";
-					//ctx.beginPath(); ctx.arc(snake.ox + (smid.x * snake.dw) , snake.oy + (smid.y * snake.dw), srad, 0, 2 * Math.PI); ctx.stroke();
-					
-					// Circle spin
-					//snake.x = spinx; snake.y = spiny;
-					
-					// Square spin
-					var didadj = false;
-					var qpi = Math.PI / 4;
-					var ppi = Math.PI / 8;
-
 					// Compensation
-					if (Math.abs(sdeg - qpi) < ppi || Math.abs(sdeg - (5 * qpi)) < ppi) {
-						//console.log("Y: " + snake.y + " - " + spinx);
-						if (snake.y < spiny) {
-							//snake.oy -= mposy - snake.y; //console.log(mposx - snake.x);
-							snake.y += snake.dh;
-							didadj = true;
-						} else if (snake.y > spiny) {
-							//snake.oy -= mposy - snake.y;
-							snake.y -= snake.dh;
-							didadj = true;
-						}
-					} else if (Math.abs(sdeg - (3 * qpi)) < ppi || Math.abs(sdeg - (7 * qpi)) < ppi) {
-						//console.log("X: " + snake.x + " - " + spinx)
-						if (snake.x < spinx) {
-							//snake.ox -= mposx - snake.x;
-							snake.x += snake.dw;
-							didadj = true;
-						} else if (snake.x > spinx) {
-							//snake.ox -= mposx - snake.x;
-							snake.x -= snake.dw;
-							didadj = true;
-						}
-					}
-					
-					if (!didadj) {
-						if (sdeg > (7 * qpi) || sdeg <= qpi)       snake.y += snake.dh;
-						else if (sdeg > qpi       && sdeg <= (3 * qpi)) snake.x -= snake.dw;
-						else if (sdeg > (3 * qpi) && sdeg <= (5 * qpi)) snake.y -= snake.dh;
-						else if (sdeg > (5 * qpi) && sdeg <= (7 * qpi)) snake.x += snake.dw; 
+					let sdeg = this.behavior.deg;
+					if (Math.abs(sdeg - PI_D4) < PI_D8 || Math.abs(sdeg - (5 * PI_D4)) < PI_D8) {
+						let yspin = ((mposy / this.dh) * this.dh) + (Math.sin(sdeg) * this.srad);
+
+						this.y += (this.dh * (this.y < yspin ? 1 : -1));
+					} else if (Math.abs(sdeg - (3 * PI_D4)) < PI_D8 || Math.abs(sdeg - (7 * PI_D4)) < PI_D8) {
+						let xspin = ((mposx / this.dw) * this.dw) + (Math.cos(sdeg) * this.srad);
+						
+						this.x += (this.dw * (this.x < xspin ? 1 : -1));
+					} else {
+						     if (sdeg > (7 * PI_D4) || sdeg <= PI_D4)       this.y += this.dh;
+						else if (sdeg > PI_D4       && sdeg <= (3 * PI_D4)) this.x -= this.dw;
+						else if (sdeg > (3 * PI_D4) && sdeg <= (5 * PI_D4)) this.y -= this.dh;
+						else if (sdeg > (5 * PI_D4) && sdeg <= (7 * PI_D4)) this.x += this.dw; 
 					}
 
+					// Time to eat
 					if (Math.random() * 1000 < 10) {
-						snake.behavior.getfood = true;
-						snake.behavior.mode = 0;
-						snake.food = { x: Math.floor(Math.random() * snake.boundw), y: Math.floor(Math.random() * snake.boundh) };
+						this.behavior.getfood = true;
+						this.behavior.mode = 0;
+						this.food = { x: Math.floor(Math.random() * this.screen.w), y: Math.floor(Math.random() * this.screen.h) };
 					}
 
 					break;
 				}
 			}
 		}
-
-		if (snake.x > snake.boundw - snake.dw) snake.x = 0;
-		else if (snake.x < 0) snake.x = snake.boundw - snake.dw;
-		if (snake.y > snake.boundh - snake.dh) snake.y = 0;
-		else if (snake.y < 0) snake.y = snake.boundh - snake.dh;
+	}
+}
+function Index_SnakeHandle() {
+	if (snake == null) {
+		snake = new Snake();
+		snake.x = GetElementWidth(snake.screen.id) / 2;
+		snake.y = GetElementHeight(snake.screen.id) / 2;
+		snake.body.push({ x: snake.x, y: snake.y });
+		snake.body.push({ x: snake.x, y: snake.y });
+		snake.body.push({ x: snake.x, y: snake.y }); 
+	}
+	if (hoveredLL == "LLProjects") {
+		snake.updatescreen();
+		snake.checkbounds();
 		
-		if ((snake.color += 1) > 360) snake.color = 0;
-		var scolor = HueToRGB(snake.color, 255); //console.log(scolor.r + ", " + scolor.g + ", " + scolor.b);
-		ctx.fillStyle = "rgba(" + scolor.r + ", " + scolor.g + ", " + scolor.b + ", " + scolor.a + ")";
-		for (var i = snake.body.length - 1; i > 0; i--) {
-			snake.body[i].x = snake.body[i - 1].x;
-			snake.body[i].y = snake.body[i - 1].y;
-
-			ctx.fillRect(Math.ceil(snake.ox + snake.body[i].x), Math.ceil(snake.oy + snake.body[i].y), Math.ceil(snake.dw), Math.ceil(snake.dh));
-		}
-		snake.body[0].x = snake.x;
-		snake.body[0].y = snake.y;
-		
-		ctx.fillRect(Math.ceil(snake.ox + snake.body[0].x), Math.ceil(snake.oy + snake.body[0].y), Math.ceil(snake.dw), Math.ceil(snake.dh));
-		ctx.fillRect(Math.ceil(snake.ox + snake.x)		  , Math.ceil(snake.oy + snake.y)        , Math.ceil(snake.dw), Math.ceil(snake.dh));
-		
-		if (snake.behavior.getfood) 
-			ctx.fillRect(Math.ceil(snake.ox + (snake.food.x)), Math.ceil(snake.oy + snake.food.y), Math.ceil(snake.dw), (snake.dh));
+		snake.drawhead();
+		snake.think();
+		snake.drawbody();
 	} else {
 		llcanvashandle = null;
 	}
 }
 
-/***  ***/
-function Index_WelcomeAnimation() {
+/***** Main Handler *****/
+function Index_Canvas() {
 	if (llcanvashandle != null) llcanvashandle();
 }
-
-/***** Main Handler *****/
-function Index_AboutAnimation() {
-	/// Index ///
-	var lltitle = document.getElementsByClassName("LLTitle")[0];
-	var llabout = document.getElementById("LLAbout");
-	var llcontact = document.getElementById("LLContact");
-	var llprojects = document.getElementById("LLProjects");
-	
+function Index_Animation() {
 	/// Crane ///
 	var craneele = document.getElementById("LLCraneGIF");
 	var cranecpy = document.getElementById("LLCraneGIFcpy");
 	cranepos.x = craneele.offsetLeft;
 	cranepos.y = craneele.offsetTop;
-	craneele.style.position = "absolute";
-	cranecpy.style.position = "absolute";
-	cranecpy.style.opacity = 0.0;
 
 	/// Piano ///
-	var notebox = document.getElementById("LLNotes");	
-	for (var i = 0; i < maxNotes; i++) {
-		notebox.innerHTML += '<div id="LLNote' + i + '"></div>';
-	}
-
+	for (var i = 0; i < maxNotes; i++) document.getElementById("LLNotes").innerHTML += '<div id="LLNote' + i + '"></div>';
+	
 	/// Sequence ///
-	var seqdata = document.getElementById("LLSequenceData");
 	var sequence = document.getElementById("LLSequence");
 	var oriseqletters = document.getElementsByClassName("LLSeqLet");
-	var oriseqletterchar = [];
-	var oriseqletterpos = [];
 	var lettersreturning = false;
 	var onletter = 0;
 	var lettertickc = 0;
 	shakeori = "calc(50% - " + (sequence.clientWidth / 2) + "px)";
 	sequence.style.left = shakeori;
+
+	seqdataobj.oletters = [];
+	seqdataobj.opos = [];
 	for (var i = 0; i < oriseqletters.length; i++) {
-		oriseqletterchar.push(oriseqletters[i].innerHTML);
-		oriseqletterpos.push(oriseqletters[i].offsetLeft + "-" + oriseqletters[i].clientTop);
+		seqdataobj.oletters.push(oriseqletters[i].innerHTML);
+		seqdataobj.opos.push(oriseqletters[i].offsetLeft + "-" + oriseqletters[i].clientTop);
 	}
-	seqdataobj.oletters = oriseqletterchar;
-	seqdataobj.opos = oriseqletterpos;
 
 	// Mail
-	var postOffice = document.getElementById("LLPostOffice");
-	for (var i = 0; i < maxMail; i++) {
-		postOffice.innerHTML += '<img src="Images/index/mail.png" class="LLMail"/>';
-	}
+	for (var i = 0; i < maxMail; i++) document.getElementById("LLPostOffice").innerHTML += '<img src="Images/index/mail.png" class="LLMail"/>';
 	var allMail = document.getElementsByClassName("LLMail");
 	var allLetters = [];
 	for (var i = 0; i < allMail.length; i++) {
 		var mrandx = Math.random() * (llcontact.clientWidth - allMail[i].clientWidth);
 		var mrandy = Math.random() * 120 - 60;
 		var mrandvx = (Math.random() * 2 - 1);
-		allLetters.push(
-			{
-				x: mrandx,
-				y: mrandy,
-				vx: mrandvx,
-				vy: (Math.random() * 2 + 1),
-				s: (Math.random() * (2 * Math.PI))
-			}
-		);
 		
+		allLetters.push(new MailLetter(mrandx, mrandy, mrandvx));
 		allMail[i].style.left = mrandx + "px";
 		allMail[i].style.top = mrandy + "px";
 	}
 
-	// Snake
-	snake = new Snake();
-	var snakerect = llprojects.getBoundingClientRect();
-	snake.x = snakerect.left + snakerect.width / 2;
-	snake.y = snakerect.top + snakerect.height / 2;
-	snake.body.push({ x: snake.x, y: snake.y });
-	snake.body.push({ x: snake.x, y: snake.y });
-	snake.body.push({ x: snake.x, y: snake.y }); 
-
 	// 
 	var changeletter = (seqletter) => {
-		var randletter;
-		if (Math.floor(Math.random() * 2) == 1) randletter = String.fromCharCode(Math.floor(Math.random() * 25) + 65); // A - Z [ 65 - 90 ]
-		else randletter = String.fromCharCode(Math.floor(Math.random() * 25) + 97); // a - z [ 97 - 122 ]
-		seqletter.innerHTML = randletter;
+		seqletter.innerHTML = RandomLetter();
 	}
 	var rotateletter = (seqletter) => {
-		var charval = seqletter.innerHTML.charCodeAt(0);
-		charval++;
-
-		if (charval < 97 && charval > 90) charval = 97;
+		var charval = seqletter.innerHTML.charCodeAt(0) + 1;
+		if (charval > 90 && charval < 97) charval = 97;
 		else if (charval > 122) charval = 65;
-
 		seqletter.innerHTML = String.fromCharCode(charval);
 	}
 	var lettermove = (tseqletter, tseqalt) => {	
@@ -675,6 +710,8 @@ function Index_AboutAnimation() {
 		tseqletter.style.alt = JSON.stringify(tseqalt);
 	}
 	var letterreturn = (tseqletter, ival) => {
+		if (tseqletter == null) return;
+		
 		var tseqalt = JSON.parse(tseqletter.style.alt);
 		tseqalt.vx = ((tseqalt.ox - tseqalt.x) / 55);
 		tseqalt.vy = ((tseqalt.oy - tseqalt.y) / 55);
@@ -700,13 +737,12 @@ function Index_AboutAnimation() {
 						tseqletter.innerHTML = " ";
 						onletter++;
 					}
-					else if (tseqletter.innerHTML == goalletter) onletter++;
+					else if (goalletter == tseqletter.innerHTML) onletter++;
 					else rotateletter(tseqletter);
 				}
 				
 				return 1;
 			} else if (lettersreturning == false) {
-				//console.log("Done");
 				tseqletter.innerHTML = seqdataobj.oletters[ival];
 				tseqletter.style.position = "";
 				tseqletter.style.transform = "";
@@ -813,15 +849,12 @@ function Index_AboutAnimation() {
 						changeletter(seqletter);
 						seqshaking = true;
 						
-						//console.log("Shake start");
 						var shakelib = 0;
 						var shake = setInterval(() => {
-							//console.log("Shaking " + shakelib);
-							if (shakelib % 2 == 0) sequence.style.left = "calc(50% - " + ((sequence.clientWidth/2) - (4 * seqdataobj.gcount)) + "px)"; //"calc(" + shakeori + "% - 3px)";
-							else sequence.style.left = "calc(50% - " + ((sequence.clientWidth/2) + (4 * seqdataobj.gcount)) + "px)"; //"calc(" + shakeori + "% + 3px)";
+							if (shakelib % 2 == 0) sequence.style.left = "calc(50% - " + ((sequence.clientWidth / 2) - (4 * seqdataobj.gcount)) + "px)";
+							else sequence.style.left = "calc(50% - " + ((sequence.clientWidth / 2) + (4 * seqdataobj.gcount)) + "px)";
 							
 							if (shakelib++ > (2 * seqdataobj.gcount) + 1) {
-								//console.log("shake done. Countdown " + seqdataobj.gcount);
 								sequence.style.left = shakeori;
 								seqshaking = false;
 								if (seqdataobj.gcount >= 6) seqdataobj.mode = 1;
@@ -832,15 +865,15 @@ function Index_AboutAnimation() {
 						}, 20);
 					}
 				} else if (seqmode == 0) {
-					seqdata.style.left = shakeori;
+					document.getElementById("LLSequenceData").style.left = shakeori;
 				} else if (seqmode == 1) {
 					var flyaway;
 
 					if (seqletter.style.alt == null || seqletter.style.alt == "") {
 						var tvx = ((Math.random() * 15 + 5) * ((Math.floor(Math.random() * 2) == 1) ? 1 : -1));
-						var opos = seqdataobj.opos[i]; //console.log(opos);
-						var oposx = opos.substring(0, opos.indexOf("-")); //console.log(oposx);
-						var oposy = opos.substring(opos.indexOf("-") + 1); //console.log(oposy);
+						var opos = seqdataobj.opos[i];
+						var oposx = opos.substring(0, opos.indexOf("-"));
+						var oposy = opos.substring(opos.indexOf("-") + 1);
 						
 						var seqstat = 
 							'{ "x": ' + oposx
@@ -851,21 +884,17 @@ function Index_AboutAnimation() {
 							+ ', "vx": ' + tvx
 							+ ', "vy": ' + ((Math.random() * 3 - 1.5))
 							+ ', "vr": ' + (Math.random())
-							//+ ', "limx": ' + (tvx > 0 ? lltitle.clientWidth : 0)
 							+ ', "limy": ' + ((llabout.clientHeight + lltitle.clientHeight) / 2 + (seqletter.clientHeight / 2))
 							+ ' }';
-						//console.log(seqstat);
 						flyaway = JSON.parse(seqstat);
 						seqletter.style.alt = seqstat;
 						seqletter.style.position = "absolute";
-						//console.log(seqletter);
 					} else {
-						flyaway = JSON.parse(seqletter.style.alt); //console.log(flyaway);
+						flyaway = JSON.parse(seqletter.style.alt);
 					}
 
-					if (Math.random() * 1000 < 20) {
-						changeletter(seqletter);
-					}
+					if (Math.random() * 1000 < 20) changeletter(seqletter);
+					
 					
 					flyaway.x += flyaway.vx;
 					flyaway.r += flyaway.vr;
@@ -898,18 +927,13 @@ function Index_AboutAnimation() {
 			lettertickc = 0;
 			lettersreturning = true;
 
-			for (var i = 0; i < seqletters.length; i++) {
-				letterreturn(seqletters[i], i);
-			}
+			for (var i = 0; i < seqletters.length; i++) letterreturn(seqletters[i], i);
 		}
 		if (lettersreturning) {
 			if (lettertickc < 80) lettertickc++;
 			else lettertickc = 1000;
 			
-			if (onletter >= oriseqletters.length - 1) {
-				//console.log("Finished");
-				lettersreturning = false;
-			}
+			if (onletter >= oriseqletters.length - 1) lettersreturning = false;
 		}
 
 		/// Contact ///
@@ -944,15 +968,14 @@ function Index_AboutAnimation() {
 		
 		/// Projects ///
 		else if (hoveredLL == "LLProjects") {
-			if (llcanvashandle == null) {
-				llcanvashandle = Index_SnakeHandle;
-			} 
+			if (llcanvashandle == null) llcanvashandle = Index_SnakeHandle;
 		}
 
 		/// Other ///
 		else if (hoveredLL == "LLOther") {
 			var llother = document.getElementById("LLOther");
-			var llorect = llother.getBoundingClientRect();
+			if (llother == null) return;
+			
 
 			if (lightningballimg.length == 0) {
 				for (var i = 0; i < 120; i++) {
@@ -963,6 +986,7 @@ function Index_AboutAnimation() {
 			}
 
 			if (lightningballs.length == 0) {
+				let llorect = llother.getBoundingClientRect();
 				for (var i = 0; i < maxLightningBalls; i++) {
 					var nlb = new LightningBall(
 						Math.floor(Math.random() * llorect.width),

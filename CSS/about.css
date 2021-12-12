@@ -2,15 +2,10 @@
     Made by Jordan Hoosman
 */
 
-:root {
-    --am-left: 200px;
-    --textdiv-opacity: 0.0;
-}
-
 #AboutMe {
     z-index: 7;
     position: absolute;
-    left: calc(var(--am-left));
+    left: var(--nav-width);
 }
 .TextDivider {
     position: absolute;
@@ -19,7 +14,7 @@
    
     height: 0;
     border-top: 1px dotted;
-    opacity: var(--textdiv-opacity);
+    opacity: 0.0;
 }
 .AboutText {
     z-index: 7;

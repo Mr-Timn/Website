@@ -2,14 +2,10 @@
     Made by Jordan Hoosman
 */
 
-:root {
-    --offset-x: 130px;
-}
-
 #ProjectList {
     z-index: 7;
     position: absolute;
-    width: calc(100% - var(--offset-x));
+    width: calc(100% - var(--nav-width));
     height: 100%;
     color: white;
 
@@ -38,17 +34,17 @@
 #ProjectsJCode {
     width: 98%;
     top: 10px;
-    left: var(--offset-x);
+    left: var(--nav-width);
 }
 #ProjectsApps {
     top: 50%;
-    left: var(--offset-x);
-    width: calc(50% - (var(--offset-x) / 2));
+    left: var(--nav-width);
+    width: calc(50% - (var(--nav-width) / 2));
 }
 #ProjectsOther {
     top: 50%;
-    right: calc(2% - (var(--offset-x))); 
-    width: calc(50% - (var(--offset-x) / 2));
+    right: calc(2% - (var(--nav-width))); 
+    width: calc(50% - (var(--nav-width) / 2));
 }
 
 #ProjectDescription {
@@ -58,8 +54,8 @@
 
     position: absolute;
     top: 2%;
-    left: calc(var(--offset-x));
-    width: calc(98% - var(--offset-x));
+    left: calc(var(--nav-width));
+    width: calc(98% - var(--nav-width));
 	padding-bottom: 10px;
     height: 96%;
 

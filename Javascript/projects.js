@@ -35,7 +35,6 @@ function PROJECTS_PAGE_LOAD() {
 						<h3 onclick="Load_JScene()">JScene</h3>
 						<h3 onclick="Load_JCrypt()">JCrypt</h3>
 						<h3 onclick="Load_JRelay()">JRelay</h3>
-						<h3 onclick="Load_JNumbers()">JNumbers</h3>
 					</div>
 				</div>
 				<div class="JCodeBox" id="JCodeProjects">
@@ -66,6 +65,8 @@ function PROJECTS_PAGE_LOAD() {
 			</div>
 		</div>
 	`;
+
+	document.getElementById("ProjectList").style.width = "calc(100% - var(--ll-left))";
 }
 function PROJECTS_PAGE_UNLOAD() {
 	console.log("Unloading projects page");
@@ -86,7 +87,7 @@ function Load_JScene() {
 					JScene is a cross-platform application engine, writting in C++, using the open source library SDL2 that I originally started as <i>Window.h</i> in my 
 					project, Lelantos. It is also the second verion of itself, the first version was originally paired with a game engine but I restructured 
 					it with the other parts of the engine in JCode (JRelay/JNumbers) and haven't offically decided to include the game engine with it. It works with Linux, 
-					Windows 10, Android, and iOS.
+					Windows 10, Android, and iOS. 
 				</p>
 				<p>	
 					SDL2 handles most of the low level access and abstraction of devices, peripherals, and general 2D rendering. JScene optimizes SDL2's API to streamline 
@@ -120,8 +121,9 @@ function Load_JCrypt() {
 			</div>
 			<div id="ProjectInfo">
 				<p>
-					JCrypt is an cryptography API I made for encrypting/decrypting data with various modern or simple (a)symmetric cryptographic functions. All encryptions except 
-					ones used for key exchanging can be used in layered cycles for additional security.
+					JCrypt is an cryptography API I made for encrypting/decrypting data with various modern or simple (a)symmetric cryptographic functions. It uses GMP for
+					large number calculation.
+					Like the rest of the library, it's cross platform compatible with Linux, Windows 10, Android, and iOS.
 				</p>
 				<p>
 					For simple encryptions it has reverse, rotate right, rotate left, Ceasear cipher, and Vignere cipher. Here is a screenshot from a simple program, also used 
@@ -195,7 +197,7 @@ function Load_JRelay() {
 		</div>
 	`;
 }
-function Load_JNumbers() {
+/*function Load_JNumbers() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
 			<div id="ProjectTitle">
@@ -204,8 +206,7 @@ function Load_JNumbers() {
 			</div>
 			<div id="ProjectInfo">
 				<p>
-					Project update: While working on operation benchmarks I reconsidered how long it would take to fully implement secure prime number generation. I 
-					imagine it would have taken me around a month to do so; Up to 3 months at the max. I decided like would like to move on with the rest engine so 
+					Project update: While working on operation benchmarks I reconsidered how long it would take to fully implement secure prime number generation. I decided like would like to move on with the rest engine so 
 					I took another attempt at integrating <a href="https://gmplib.org/">GMP</a> into <a onclick="Load_JRelay()">JRelay</a> which was successful. I'm 
 					still keeping this part of the engine mostly for legacy reasons. As a final benchmark I generated 2 random 65536-bit 
 					(0 - <a href="https://sites.google.com/site/largenumbers/home/appendix/a/numbers/265536">A very big number</a>) numbers 
@@ -503,7 +504,7 @@ function Load_JNumbers() {
 		</div>
 		`;
 	}
-}
+}*/
 function Load_JTransmission() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
@@ -1061,7 +1062,7 @@ function LinkTo_JRelay() {
 	LinkTo_Override();
 	Load_JRelay();
 }
-function LinkTo_JNumbers() {
+/*function LinkTo_JNumbers() {
 	LinkTo_Override();
 	LinkTo_JNumbers();
-}
+}*/
