@@ -3,19 +3,17 @@
 */
 
 #LargeLinks {
-    z-index: 5;
+    z-index: 7;
     position: absolute;
 	
 	top: calc(var(--ll-top));
 	left: calc(var(--ll-left));
-	width: calc(2 * var(--ll-width) + var(--ll-buffer));
-	height: calc(2 * var(--ll-width) + var(--ll-buffer));
 }
 .LL {
-    z-index: 5;
+    z-index: 7;
     position: fixed;
 
-	top: calc(-1 * var(--ll-size) - 5px);
+	top: calc(-1 * var(--ll-height) - 5px);
 	left: var(--ll-left);
     width: var(--ll-width);
     height: var(--ll-height);
@@ -109,34 +107,16 @@
     height: 65px;
 }
 
-#LLDiv {
-    z-index: 7;
-
-	opacity: 0.0;
-
-    position: absolute;
-    width: 1px;
-    height: 98%;
-    top: 1%;
-    left: calc(var(--ll-left) + (var(--ll-size) * 2) + var(--ll-buffer) + 3vw );
-
-    color: white;
-    border-left: 1px solid;
-}
-
 #WelcomeAnimation {
-	z-index: 9;
-	position: absolute;
+	z-index: 5;
+	position: fixed;
 	color: white;
 }
 .WAText {
 	overflow-wrap: anywhere;
 	text-align: center;
 }
-#WAText1 {
-	margin-top: 10px;
-}
-#WAText2 {
+.WATextFooter {
 	position: absolute;
 	bottom: 5px;
 }

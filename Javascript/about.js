@@ -143,10 +143,10 @@ function ABOUT_PAGE_LOAD() {
 				<p class="aboutblock">
 					After working through many projects I decided to make an attempt at creating an engine to streamline projects between programs on all of my devices. The 
 					engine consists of a few different parts. One is a cross-enginge application manager called <a onclick="LinkTo_JScene()">JScene</a>. It's built off of the 
-					open source API SDL2. JScene uses it's functions to help organize and manage resources in it's usage as well as speeding up the process of making it functional. 
-					It also is capable of processing video with ffmpeg. Another API I made is called <a onclick="LinkTo_JRelay()">JRelay</a>. It can be used stand alone to handle 
+					open source API SDL2. JScene uses it's functions to help organize and manage resources in it's usage as well as speeding up the process of making my applications  functional. 
+					It also is capable of processing video and playing with ffmpeg. Another API I made is called <a onclick="LinkTo_JNetwork()">JNetwork</a>. It can be used stand alone to handle 
 					network connections for an applications or in conjunction with JScene for a project. JCrypt is my cryptography engine. It uses GMP large number arthimetic and 
-					has most modern standerds like RSA, Diffie-Hellman, and ECDH. 
+					has most modern standerds like RSA, Diffie-Hellman, and ECDH. More recently I've started adding post-quantum algorithms such as Super-isogeny Diffie-Hellman and Falcon.
 					Check out the <a onclick=NavButtonClick('PROJECTS')>Projects</a> page or above links for a full description of each.
 				</p>
 			</div>

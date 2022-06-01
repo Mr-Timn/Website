@@ -78,9 +78,9 @@ function WindowResized() {
 	ctx.canvas.width = windowWidth;
 	ctx.canvas.height = windowHeight;
 
-	changeCSSProperty("--nav-height", "100vmax");
+	changeCSSProperty("--nav-height", "100%");
 	if (windowHeight > windowWidth) {
-		changeCSSProperty("--nav-width", "30vmin");
+		changeCSSProperty("--nav-width", "25vmin");
 	} else {
 		changeCSSProperty("--nav-width", "8vmax");
 	}
@@ -171,14 +171,13 @@ function NavRotateItem(Item) {
 		Item.style.transform = "rotate(" + rotateval + "deg)";
 		if (rotateval >= 35) clearInterval(rotateitem); 
 	}, 3);
-
+	
+	document.getElementById("NavHoverTextH3").innerText = Item.alt;
+	
 	navHoverTextInterval = setInterval(() => {
-		document.getElementById("NavHoverTextH3").innerText = Item.alt;
-
 		navHoverText.style.left = (mouseX + 20) + "px";
 		navHoverText.style.top = (mouseY - 45) + "px";
-
-		// onmouseleave/out is inconsistent - doing this instead
+		
 		if (mouseX > NavButtons.offsetWidth || !(mouseY > Item.offsetTop && mouseY < Item.offsetTop + Item.offsetHeight)) {
 			NavRotateUndo(rotatedItem, true);
 			rotateControl = true;
@@ -201,7 +200,7 @@ function NavRotateUndo(Item, Override) {
 	document.getElementById("NavHoverTextH3").innerText = "";
 }
 function NavSlideItem(Item, Delay) {
-	setTimeout(function() { //console.log(Item.offsetTop);
+	setTimeout(function() {
 		var slidegoal = Item.offsetWidth, slideval = -slidegoal;
 		var mode = 1;
 		var navslide = setInterval(() => {
@@ -224,17 +223,17 @@ function NavSlideIn() {
 	var navitems = document.getElementsByClassName("NavItem");
 	for (var i = 0; i < navitems.length; i++) {
 		var item = navitems[i];
-		item.style.top = `calc( 10px + (((100vh / 7) + 10px) * ` + i + `))`;
+		item.style.top = `calc(10px + (((100vh / 7) + 10px) * ` + i + `))`;
 		NavSlideItem(item, i * 100);
 	}
 }
 function NavButtonClick(Item, Override) {
-	if (Item == CURRENTPAGE || (!Override && !pageUnloaded)) return;
+	if (Item == CURRENTPAGE || Item == "" || (!Override && !pageUnloaded)) return;
 
 	if (Override == null || !Override) {
 		window[CURRENTPAGE + "_PAGE_UNLOAD"]();
 		pageUnloaded = false;
-			
+		
 		setTimeout(function() {
 			pageUnloaded = true;
 		}, pageUnloadTimer);

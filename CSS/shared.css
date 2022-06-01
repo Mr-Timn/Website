@@ -2,18 +2,10 @@
     Made by Jordan Hoosman
 */
 
-/*
-    Developer notes
-    - Page content should have a z-index of 5
-*/
-
 :root {
 	--text-color-orange: rgb(225, 160, 45);
 	--text-color-blue: rgb(20, 160, 225);
 	--text-color-purple: rgb(155, 15, 255);
-
-	/*--nav-width: 3vmax;
-	--nav-height: 100vh;*/
 }
 
 /*** Scroll bar ***************/
@@ -31,9 +23,8 @@
 }
 
 /***  ***************/
-
 body {
-    background-color: rgba(0, 0, 0, 255);
+    background-color: rgba(25, 25, 25, 255);
     padding: 0;
     margin: 0;
 
@@ -54,7 +45,6 @@ a:hover {
     position: fixed;
     top: 0;
     left: 0;
-    
 }
 #BackgroundVideo video /* #VideoSource */ {
     opacity: 0.0;

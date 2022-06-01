@@ -13,8 +13,7 @@
 // - Reimplement MOTD - Don't want to reprogram positioning right now so commenting out for now
 //   - Moving code to 000archive.js
 
-
-var lltop, llbuffer, llwidth, llheight;
+var lldiv, lltop, llbuffer, llwidth, llheight, VYType;
 
 var llcanvashandle = null;
 var lltitle, llabout, llcontact, llprojects;
@@ -25,9 +24,19 @@ const maxMail = 30;
 const maxLightningBalls = 11;
 
 const MESSAGES = [
-	{ font: [ 45, 90 ], c: "", l: "",        m: "Welcome to my website!" },
-	{ font: [ 30, 55 ], c: "", l: "SUMMARY", m: "If you want to see a short intro/animation of who I am click here!" },
-	{ font: [ 12, 25 ], c: "", l: "",        m: "[Hint] Hover your mouse over each box and see what happens!" }
+	{ font: [ 45, 60 ], c: "", l: "",             m: "Welcome to my website!" },
+	{ font: [ 30, 30 ], c: "", l: "",             m: "_____________" },
+	{ font: [ 30, 50 ], c: "", l: "-LinkTo_JCam", m: "Click here to check out my current project JCam!" },
+	{ font: [ 30, 30 ], c: "", l: "",             m: "_____________" },
+	{ font: [ 30, 50 ], c: "", l: "ABOUT",        m: "If you would like to get to know be better check out my About page!" },
+	{ font: [ 30, 30 ], c: "", l: "",             m: "_____________" },
+	{ font: [ 30, 50 ], c: "", l: "PROJECTS",     m: "If you want to see some of the cool things I've made check out my Projects page!" },
+	{ font: [ 30, 30 ], c: "", l: "",             m: "_____________" },
+	{ font: [ 30, 50 ], c: "", l: "",             m: "I would love to answer any questions regarding my page so don't hesitate to ask!" },
+  //{ font: [ 30, 30 ], c: "", l: "SUMMARY",      m: "If you want to see a short intro/animation of who I am click here!" },
+	{ font: [ 12, 30 ], c: "", l: "",             m: "[Hint] Hover your mouse over each box and see what happens!" }
+	
+	
 ];
 
 var cranepos = { x: 0, y: 0, flap: true };
@@ -49,7 +58,7 @@ function INDEX_PAGE_LOAD() {
 
 	pageContent.innerHTML += `
 		<div id="LargeLinks">
-			<div class="LL LLLeft" onmousemove="Index_LLMouseIn('LLAbout', 1)" id="LLAbout">
+			<div class="LL LLLeft" onmousemove="Index_LLMouseIn('LLAbout', 1)" onmouseleave="Index_LLMouseOut()" id="LLAbout">
 				<img src="Images/index/crane.gif" id="LLCraneGIF"/>
 				<img src="Images/index/crane.gif" id="LLCraneGIFcpy" width="75px" height="75px"/>
 
@@ -76,15 +85,15 @@ function INDEX_PAGE_LOAD() {
 
 				<div class="LLTitle" onclick=NavButtonClick('ABOUT')><h3>About</h3></div>
 			</div>
-			<div class="LL LLRight" onmousemove="Index_LLMouseIn('LLContact', 1)" id="LLContact">
+			<div class="LL LLRight" onmousemove="Index_LLMouseIn('LLContact', 1)" onmouseleave="Index_LLMouseOut()" id="LLContact">
 				<div id="LLPostOffice"></div>
 				
 				<div class="LLTitle" onclick=NavButtonClick('CONTACT')><h3>Contact</h3></div>
 			</div>
-			<div class="LL LLLeft" onmousemove="Index_LLMouseIn('LLProjects', 1)" id="LLProjects">
+			<div class="LL LLLeft" onmousemove="Index_LLMouseIn('LLProjects', 1)" onmouseleave="Index_LLMouseOut()" id="LLProjects">
 				<div class="LLTitle" onclick=NavButtonClick('PROJECTS')><h3>Projects</h3></div>
 			</div>
-			<div class="LL LLRight" onmousemove="Index_LLMouseIn('LLOther', 1)" id="LLOther">
+			<div class="LL LLRight" onmousemove="Index_LLMouseIn('LLOther', 1)" onmouseleave="Index_LLMouseOut()" id="LLOther">
 				<div id="LLLightningBalls"></div>
 
 				<div class="LLTitle" onclick=NavButtonClick('OTHER')><h3>Other</h3></div>
@@ -94,6 +103,7 @@ function INDEX_PAGE_LOAD() {
 		<div id="WelcomeAnimation"></div>
 	`;
 
+	lldiv = document.getElementById("LargeLinks");
 	lltitle = document.getElementsByClassName("LLTitle")[0];
 	llabout = document.getElementById("LLAbout");
 	llcontact = document.getElementById("LLContact");
@@ -126,155 +136,93 @@ function Index_ResizeHandle(Diff) {
 	
 	llbuffer = 1;
 	if (windowHeight > windowWidth) {
-		lltop    = 30;
-		llwidth  = 100;
-		llheight = 48.5;
+		VYType = "vmax";
+		lltop    = 13;		changeCSSProperty("--ll-top"    , lltop    + VYType);
+		llwidth  = 75;
+		llheight = 17;		changeCSSProperty("--ll-height" , llheight + VYType);
 
 		wa.style.top    = "10px";
 		wa.style.left   = "calc(var(--nav-width) + 2vmin)";
-		wa.style.width  = "100vmin";
-		wa.style.height = "270px";
+		wa.style.width  = "calc(var(--ll-width) - 10px)";
+		wa.style.height = "calc(100vmax - 10px)";
+
+		lldiv.style.width = "calc(var(--ll-width))";
 
 		llother.className = "LL LLeft";
 		llcontact.className = "LL LLLeft";
 
 		for (var i = 0; i < MESSAGES.length - 1; i++) document.getElementById("WAText" + i).style.fontSize = MESSAGES[i].font[1] + "px";
 	} else {
-		lltop    = 1;
+		VYType = "vmin";
+		lltop    = 1;    	changeCSSProperty("--ll-top"    , lltop    + VYType);
 		llwidth  = 48.5;
-		llheight = 48.5;
+		llheight = 48.5;	changeCSSProperty("--ll-height" , llheight + VYType);
 
 		wa.style.top = "100px";
-		wa.style.left = "calc(var(--nav-width) + (2 * (var(--ll-width) + var(--ll-buffer))) )";
+		wa.style.left = "calc(var(--nav-width) + 2vmin + (2 * (var(--ll-width) + var(--ll-buffer))) )";
 		wa.style.width = "calc(" + windowWidth + "px - (var(--ll-left) + 100vmin))";
 		wa.style.height = "calc(100% - 100px)";
 
+		lldiv.style.width = "calc(2 * var(--ll-width) + var(--ll-buffer))";
 		llother.className = "LL LLRight";
 		llcontact.className = "LL LLRight";
 
 		for (var i = 0; i < MESSAGES.length - 1; i++) document.getElementById("WAText" + i).style.fontSize = MESSAGES[i].font[0] + "px";
 	}
 	
-	changeCSSProperty("--ll-buffer" , "1vmin");
 	changeCSSProperty("--ll-width"  , llwidth  + "vmin");
-	changeCSSProperty("--ll-height" , llheight + "vmin");
-	changeCSSProperty("--ll-top"    , lltop    + "vmin");
+	changeCSSProperty("--ll-buffer" , "1vmin");
 	changeCSSProperty("--ll-left"   , "calc(var(--nav-width) + 2vmin)");
 }
 
 /***** Welcome *****/
 function Load_Message(n) {
-	var msg = document.getElementById("WAText" + n);
-	var s = 0, t = 0, len = MESSAGES[n].m.length;
+	let wamsg = document.getElementById("WAText" + n);
+	let mmsg = MESSAGES[n];
+	let s = 0, t = 0, len = mmsg.m.length;
 
-	var growmsg = setInterval(function() {
+	if (n == MESSAGES.length - 1) {
+		wamsg.className = "WAText WATextFooter";
+	}
+
+	let growmsg = setInterval(function() {
 		if (s++ >= len) {
 			var fixmsg = setInterval(function() {
 				if (t++ == len) clearInterval(fixmsg);
-				msg.innerHTML = MESSAGES[n].m.substring(0, t) + MESSAGES[n].c.substring(t + 1);
-			}, 20);
+				wamsg.innerHTML = MESSAGES[n].m.substring(0, t) + MESSAGES[n].c.substring(t + 1);
+			}, 10);
 			clearInterval(growmsg); 
 		}
 
-		msg.innerHTML = MESSAGES[n].c.substr(0, s);
+		wamsg.innerHTML = MESSAGES[n].c.substring(0, s);
 	}, 15);
 }
 function Index_Welcome_Animation() {
-	for (var i = 0; i < MESSAGES.length; i++) {
-		document.getElementById("WelcomeAnimation").innerHTML += `
-			<div class="WAText" onclick="NavButtonClick('` + MESSAGES[i].l + `', false)" id="WAText` + i + `"><h` + (i + 1) + ` ></h` + (i + 1) + `></div>
-		`;
+	for (let i = 0; i < MESSAGES.length; i++) {
+		if (MESSAGES[i].l != "" && MESSAGES[i].l[0] == '-') {
+			document.getElementById("WelcomeAnimation").innerHTML += `<div class="WAText" onclick="` + MESSAGES[i].l.substring(1) + `()" id="WAText` + i + `"></div>`;
+		} else {
+			document.getElementById("WelcomeAnimation").innerHTML += `<div class="WAText" onclick="NavButtonClick('` + MESSAGES[i].l + `', false)" id="WAText` + i + `"></div>`;
+		}
+		
 		
 		MESSAGES[i].c = RandomText(MESSAGES[i].m, true);
 		if (MESSAGES[i].l != "") {
 			let link = document.getElementById("WAText" + i);
 			link.style.cursor = "pointer";
 		}
+		
+		setTimeout(function() { Load_Message(i); }, 100 + (i * 250));
 	}
-
-	setTimeout(function() { Load_Message(0); }, 100);
-	setTimeout(function() { Load_Message(1); }, 350);
-	setTimeout(function() { Load_Message(2); }, 600);
 }
 
 /***** LargeLink Mouse Handles *****/
 function Index_LLMouseIn(Item, Modifier) {
 	if (Modifier == 0 || indexItemsSettled != 4) return;
-
-	if (Modifier == -1) hoveredLL = "";
-	else hoveredLL = Item;
-
-	/*var blowupbox = document.getElementById(Item);
-	var blowupmode = 0;
-	var dogrow = Modifier == 1;
-	var blowupval = dogrow ? 0 : 70;
-	var leftoffset, topoffset, oriwidth, oriheight, status;
-	
-	if (Modifier > 0) {
-		if (blowupbox.style.alt == null || blowupbox.style.alt == "") {
-			leftoffset = (blowupbox.offsetLeft / windowWidth) * 100;
-			topoffset = (blowupbox.offsetTop / windowHeight) * 100;
-			oriwidth = (blowupbox.clientWidth / windowWidth) * 100;
-			oriheight = (blowupbox.clientHeight / windowHeight) * 100;
-
-			blowupbox.style.alt = 
-				'{   "l": ' + leftoffset 
-				+ ', "t": ' + topoffset 
-				+ ', "w": ' + oriwidth 
-				+ ', "h": ' + oriheight
-				+ ', "s": "open"'
-				+ ' }';
-		} else {
-			var altval = JSON.parse(blowupbox.style.alt);
-			status = altval.s;
-			
-			if (status == "open") return;
-		}
-		
-		hoveredLL = Item;
-		ItemMouseOut(blowupbox, Index_LLMouseOut, 25);
-	} else {
-		var altval = JSON.parse(blowupbox.style.alt);
-		leftoffset = altval.l;
-		topoffset = altval.t;
-		oriwidth = altval.w;
-		oriheight = altval.h;
-		status = altval.s;
-
-		if (status != "open") return;
-	}
-	
-	var llblowup = setInterval(() => {
-		if (blowupmode == 0) {
-			blowupval += (2.5 * Modifier);
-			
-			if (dogrow && blowupval >= 80) blowupmode = 1;
-			else if (!dogrow && blowupval <= 0) {
-				blowupval = 0;
-				blowupmode = 1;
-			}
-		} else {
-			if (!dogrow) {
-				/*blowupbox.style.width = oriwidth + "%";
-				blowupbox.style.height = oriheight + "%";
-				blowupbox.style.left = leftoffset + "%";
-				blowupbox.style.top = topoffset + "%";* /
-				blowupbox.style.alt = null;
-				
-				if (hoveredLL == Item) hoveredLL = "";
-			}
-
-			clearInterval(llblowup);
-		}
-		
-		/*blowupbox.style.width = "calc(" + oriwidth + "% + " + blowupval + "px)";
-		blowupbox.style.height = "calc(" + oriheight + "% + " +  blowupval + "px)";
-		blowupbox.style.left = "calc(" + leftoffset + "% - " + (blowupval / 2) + "px)";
-		blowupbox.style.top = "calc(" + topoffset + "% - " + (blowupval / 2) + "px)";* /
-	}, 5);*/
+	if (Modifier == -1) hoveredLL = ""; else hoveredLL = Item;
 }
-function Index_LLMouseOut(Item) {
-	Index_LLMouseIn(Item.id, -1);
+function Index_LLMouseOut() {
+	Index_LLMouseIn("", -1);
 }
 
 /***** LargeLink Animation *****/
@@ -296,7 +244,7 @@ function Index_SlideInElement(Item, IsTop, Delay, Modifier) {
 		var topslide = setInterval(() => {
 			if (mode == 1) {
 				topvalue += (1.25 * Modifier);
-				ele.style.top = topvalue + "vmin";
+				ele.style.top = topvalue + VYType;
 
 				if (slidein && topvalue >= topgoal) {
 					mode = 2;
@@ -306,13 +254,13 @@ function Index_SlideInElement(Item, IsTop, Delay, Modifier) {
 				}
 			} else if (mode == 2) {
 				topvalue += (5 * Modifier);
-				ele.style.top = "calc(" + topgoal + "vmin + " + topvalue + "px)";
+				ele.style.top = "calc(" + topgoal + VYType + " + " + topvalue + "px)";
 				
 				if (slidein && topvalue >= 55) mode = 3;
 				else if (!slidein && topvalue <= topgoal) mode = 1;
 			} else if (mode == 3) {
 				topvalue -= (2 * Modifier);
-				ele.style.top = "calc(" + topgoal + "vmin + " + topvalue + "px)";
+				ele.style.top = "calc(" + topgoal + VYType + " + " + topvalue + "px)";
 
 				if (slidein && topvalue <= 0) mode = 4;
 				else if (!slidein && topvalue >= 50.5) mode = 2;
@@ -335,11 +283,11 @@ function Index_SlideIn() {
 }
 function Index_SlideOut() {
 	indexItemsSettled = 0;
-
-	Index_SlideInElement("LLAbout"   , true , 3, -1.75);
-	Index_SlideInElement("LLContact" , true , 2, -1.75);
-	Index_SlideInElement("LLProjects", false, 1, -1.75);
+	
 	Index_SlideInElement("LLOther"   , false, 0, -1.75);
+	Index_SlideInElement("LLProjects", false, 1, -1.75);
+	Index_SlideInElement("LLContact" , true , 2, -1.75);
+	Index_SlideInElement("LLAbout"   , true , 3, -1.75);
 }
 
 /***** Mail Letters *****/
@@ -489,7 +437,7 @@ function Snake() {
 		getfood: false,
 		deg: 0,
 		off: 0
-	}
+	};
 
 	this.drawsquare = function(p) {
 		ctx.fillRect(Math.ceil(this.screen.x + p.x), Math.ceil(this.screen.y + p.y), Math.ceil(this.dw), Math.ceil(this.dh));
@@ -895,12 +843,11 @@ function Index_Animation() {
 
 					if (Math.random() * 1000 < 20) changeletter(seqletter);
 					
-					
 					flyaway.x += flyaway.vx;
 					flyaway.r += flyaway.vr;
-					flyaway.y += flyaway.vy; //if (i == 0) console.log(flyaway.y);
-
+					flyaway.y += flyaway.vy;
 					flyaway.vx *= 0.8;
+
 					if (Math.abs(flyaway.vx) < 0.05) {
 						if (flyaway.y < flyaway.limy) {
 							flyaway.vy = Math.abs(flyaway.vy * 1.1);

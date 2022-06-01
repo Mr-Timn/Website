@@ -24,7 +24,7 @@ function PROJECTS_PAGE_LOAD() {
 	//console.log("Loading projects page");
 
 	pageContent.innerHTML = `
-		<div id="ThisPageIsntGoingToBeInterestingBecauseImTiredOfDealingWithJavaScriptToPerformIterativeBasedTasks">
+		<div id="ThisPageIsntGoingToBeInterestingBecauseImTiredOfDealingWithJavaScriptToPerformIterativeBasedTasks"></div>
 		<div id="ProjectList">
 			<div class="Project" id="ProjectsJCode">
 				<h1>JCode</h1>
@@ -34,12 +34,13 @@ function PROJECTS_PAGE_LOAD() {
 						<h2><u>JCode - Libraries</u></h3>
 						<h3 onclick="Load_JScene()">JScene</h3>
 						<h3 onclick="Load_JCrypt()">JCrypt</h3>
-						<h3 onclick="Load_JRelay()">JRelay</h3>
+						<h3 onclick="Load_JNetwork()">JNetwork</h3>
 					</div>
 				</div>
 				<div class="JCodeBox" id="JCodeProjects">
 					<div class="ProjectLinks JCodeBox2">
 						<h2><u>JCode - Projects</u></h2>
+						<h3 onclick="Load_JCam()">JCam</h3>
 						<h3 onclick="Load_JTransmission()">JTransmission</h3>
 						<h3 onclick="Load_Snake()">Snake</h3>
 						<h3 onclick="Load_RPS()">RPS Simulator</h3>
@@ -65,8 +66,6 @@ function PROJECTS_PAGE_LOAD() {
 			</div>
 		</div>
 	`;
-
-	document.getElementById("ProjectList").style.width = "calc(100% - var(--ll-left))";
 }
 function PROJECTS_PAGE_UNLOAD() {
 	console.log("Unloading projects page");
@@ -86,7 +85,7 @@ function Load_JScene() {
 				<p>
 					JScene is a cross-platform application engine, writting in C++, using the open source library SDL2 that I originally started as <i>Window.h</i> in my 
 					project, Lelantos. It is also the second verion of itself, the first version was originally paired with a game engine but I restructured 
-					it with the other parts of the engine in JCode (JRelay/JNumbers) and haven't offically decided to include the game engine with it. It works with Linux, 
+					it with the other parts of the engine in JCode JNetwork and haven't offically decided to include the game engine with it. It works with Linux, 
 					Windows 10, Android, and iOS. 
 				</p>
 				<p>	
@@ -122,24 +121,26 @@ function Load_JCrypt() {
 			<div id="ProjectInfo">
 				<p>
 					JCrypt is an cryptography API I made for encrypting/decrypting data with various modern or simple (a)symmetric cryptographic functions. It uses GMP for
-					large number calculation.
-					Like the rest of the library, it's cross platform compatible with Linux, Windows 10, Android, and iOS.
+					large number calculation for it's classical algorithms(RSA/DH). Recently I started implementing post-quantum algorithms like Supersingular Isogeny Diffie-Hellman 
+					and Falcon. Argon2, which won the recent password hashing competition, has also been integrated into the library.  
+					Like the rest of the library, it's cross platform compatible with Linux, Windows 10, Android, iOS. Parts of the library have been rewritten to work with 
+					Arduino ESP8266/32; This includes all ECC curves and post-quantum algorithms. 
 				</p>
 				<p>
-					For simple encryptions it has reverse, rotate right, rotate left, Ceasear cipher, and Vignere cipher. Here is a screenshot from a simple program, also used 
-					below, encrypting and decrypting the same message using a randomly generated key.
+					For simple encryptions it has reverse, rotate right, rotate left, Ceasear cipher, and Vignere cipher.
 				</p>
-				<img src="Images/projects/JCrypt/simpleexample.png"/>
 				<p>
 					For modern encryptions, JCrypt can encrypt and decrypt using both AES 128/192/256 and Serpent. AES has both a software and hardware implementation using the AES-NI 
 					instruction set for modern x86 processors which <i>significantly</i> improves performance.
 				</p>
-				<img src="Images/projects/JCrypt/aesexample.png"/>
 				<p>
-					For modern key exchange encryption, JCrypt can use both RSA, Diffie-Hellman, and ECC standards. Here are the outputs for the generated keys that are 
-					generated. ECC can use the curves: P192, P224, P256, P384, P521, W25519, W448, Curve25519, Curve448, Edwards25519, Edwards448, E448, SECP192K1, SECP224K1, 
+					For modern key exchange encryption, JCrypt can use both RSA, Diffie-Hellman, and ECC standards. ECC can use the curves: P192, P224, P256, P384, P521, W25519, W448, Curve25519, Curve448, Edwards25519, Edwards448, E448, SECP192K1, SECP224K1, 
 					SECP256K1, SECP192R1, SECP224R1, SECP256R1, SECP384R1, SECP521R1.
 				</p>
+				
+				<p> Below are some screenshots of the library encrypting and decrypting messages</p>
+				<img src="Images/projects/JCrypt/simpleexample.png"/>
+				<img src="Images/projects/JCrypt/aesexample.png"/>
 				<img src="Images/projects/JCrypt/rsaexample1.png"/>
 				<img src="Images/projects/JCrypt/rsaexample2.png"/>
 				<img src="Images/projects/JCrypt/rsaexample3.png"/><br>
@@ -150,16 +151,16 @@ function Load_JCrypt() {
 		</div>
 	`;
 }
-function Load_JRelay() {
+function Load_JNetwork() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
 			<div id="ProjectTitle">
 				` + Projects_leftarrow + `
-				<h1>JRelay</h1>
+				<h1>JNetwork</h1>
 			</div>
 			<div id="ProjectInfo">
 				<p>
-					JRelay is a networking API that I made as part of JCode to handle all of the networking done with the projects I make. It's broken down into a few different parts so 
+					JNetwork is a networking API that I made as part of JCode to handle all of the networking done with the projects I make. It's broken down into a few different parts so 
 					that I can quickly create simple applications or easily implement other types of socket communication like bluetooth, which I intended to implement later.
 				</p>
 				<p>
@@ -182,329 +183,50 @@ function Load_JRelay() {
 			<!-- Update 1
 			<div id="ProjectInfo">
 				<p>
-					JRelay is a network application interface written C++ to try and make easier most of the communication when trying to integrate sockets in an application. It has 
-					currently 2 parts - JRelayServer and JRelayClient, which when used together it allows for easy setup and use. This includes things like password locked servers 
-					to prevent unwanted connections and additional levels of security when attempting communication. Currently it has reverse, caesar, and vignere ciphers functional and 
+					JNetwork is a network application interface written C++ to try and make easier most of the communication when trying to integrate sockets in an application.
+					This includes things like password locked servers to prevent unwanted connections and additional levels of security when attempting communication. Currently it has reverse, caesar, and vignere ciphers functional and 
 					can be arranged in many way. I have plans for implementing RSA and Diffie-Hellman for key exchanges and AES for additional security very soon. They'll be implemented 
-					once prime number generation is improved in JNumbers. Longer term planning for JRelay would include bluetooth support. 
+					once prime number generation is improved in JNumbers. Longer term planning for JNetwork would include bluetooth support. 
 				</p>
 				<p>
-					There isn't much else to say about JRelay. Once integration with JNumbers and updated documentation is started the page will start to fill out more. Check 
-					out <a onclick="Load_JTransmission()">JTransmission</a> for an application using JRelay. I've detailed most of it's usage there with examples. 
+					There isn't much else to say about JNetwork. Once integration with JNumbers and updated documentation is started the page will start to fill out more. Check 
+					out <a onclick="Load_JTransmission()">JTransmission</a> for an application using JNetwork. I've detailed most of it's usage there with examples. 
 				</p>
 			</div>
 			--!>
 		</div>
 	`;
 }
-/*function Load_JNumbers() {
+function Load_JCam() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
 			<div id="ProjectTitle">
 				` + Projects_leftarrow + `
-				<h1>JNumbers</h1>
+				<h1>JCam</h1>
 			</div>
 			<div id="ProjectInfo">
 				<p>
-					Project update: While working on operation benchmarks I reconsidered how long it would take to fully implement secure prime number generation. I decided like would like to move on with the rest engine so 
-					I took another attempt at integrating <a href="https://gmplib.org/">GMP</a> into <a onclick="Load_JRelay()">JRelay</a> which was successful. I'm 
-					still keeping this part of the engine mostly for legacy reasons. As a final benchmark I generated 2 random 65536-bit 
-					(0 - <a href="https://sites.google.com/site/largenumbers/home/appendix/a/numbers/265536">A very big number</a>) numbers 
-					and multiplied them; I ran this 3 times and the operation took 37 seconds each time, using around 6% of my cpu. 
+					JCam is a WiFi security camera that uses post-quantum encryption to establish secure connections before streaming. This includes 2 types of 
+					cameras; Arduino(ESP8266/32) cameras and any device that supports USB cameras. The project is built on top of my JCode library so the cameras 
+					can be connected to from pretty much any device (Android/iOS/Windows/Linux). It is an ongoing project and I hope to sell them in the future.
+					I'm still implementing more algorithms into <a onclick="LinkTo_JCrypt()">JCrypt</a> but currently the cameras can use: Elliptic-curve Diffie-Hellman or Superisogeny 
+					Diffie-Helllman for key exchanging, Falcon for verifying signatures, and AES for encrypting the camera's stream.
 				</p>
 				<p>
-					JNumbers is a large number library I created because I was unable to find a sufficent large number library that would work with my future projects 
-					in C++. Since speed is a <i>huge</i> part of my goal with this engine it was very important I find something that can be integrated well. This part
-					of the enigine still needs a <i>lot</i> of work. At the time of writing, JNumbers does work for infinitely long numbers in a resonable amount of time. 
-					Like most programe it's perfromance depends a lot on the speed of your CPU. It can perform the arithmetic operations of addition, subtraction, 
-					multiplication, division, modulus, power, and modular exponentiation.
+					To work around the need for a certificate authority or having to enter a public key to the app, each connection uses the password to generate 
+					and validate signatures to prevent man-in-the-middle attacks. You can watch my demonstration and in depth explanation 
+					<a href="https://www.tiktok.com/@theycallmethelegend/video/7090604871044402475">here</a> on TikTok!
 				</p>
+
 				<p>
-					Some of the operations in JNumbers aren't optimized completly yet. All individual operations work fast enough for individual problems but isn't good 
-					with generating prime numbers over around 32-bits; I have plans to address this very soon as the rest of the engine reaches it's functionality. I have 
-					Karatsuba's implemented algorithm is alongside regular multiplication without any benchmarks yet; For the same reason that this 
-					project is still in very early development, around a month or so old. 
+					Here are a couple pictures of the Prototype MK 3: The Birdhouse! I built it using cardboard from the box a network switch I bought came in. 
 				</p>
-				<div id="JNumbersExample">
-					<p>
-						Here are are results from an example program and the screenshot they come from. The hexadecimal value is passed for calculation since it's the 
-						quickest to convert to a usable value. It would be fairly annoying to check the results by hand so if you want to verify you can go 
-						<a href="https://defuse.ca/big-number-calculator.htm">here</a>. I used a few websites to verify myself but this one was my favorite.
-					</p>
-					<div class="jnum_numdesc" id="JNumbersX">
-						<p>
-							<span class="jnum_numtitle"><u>Number 1 - X </u></span><br>
-							
-							<span class="jnum_color1">
-								decimal<br>
-							</span>
-							<span class="jnum_color2">
-								30,530,225,201,270,325,642,673,571,406,886,226,295,708,472,183,571,229,762,978,352,739,922,477,631,805,867,692,603<br>
-							</span>
-
-							<span class="jnum_color1">
-								binary<br>
-							</span>
-							<span class="jnum_color2">
-								_00001111101101110011001000101010_11011100111110000011101111011110<br>
-								_00000010001110000000000101000111_01011000001101000001001100010000<br>
-								_00101001001110001001010010000010_00010001001110110111101011011110<br>
-								_11100111001101001011100100000001_00111011110111000101000110100011<br>
-								_10000000001101000001001000111011<br>
-							</span>
-
-							<span class="jnum_color1">
-								hexadecimal<br>
-							</span>
-							<span class="jnum_color2">
-								FB7322A_DCF83BDE_02380147_58341310_29389482_113B7ADE_E734B901_3BDC51A3_8034123B<br>
-							</span>
-						</p>
-					</div>
-					<div class="jnum_numdesc" id="JNumbersY">
-						<p>
-							<span class="jnum_numtitle"><u>Number 2 - Y</u></span><br>
-							
-							<span class="jnum_color1">
-								decimal<br>
-							</span>
-							<span class="jnum_color2">
-								7,540,637,272,735,664,498,083,352,288,605,487,941,544,425,828,557,361,380,833,463,371,435,029,233,463<br>
-							</span>
-							
-							<span class="jnum_color1">
-								hexadecimal<br>
-							</span>
-							<span class="jnum_color2">
-								10ABD975_8576814D_034E63EE_FA1785CB_063478DE_A5630475_63DC2185_6ADEFF37<br>
-							</span>
-							
-							<span class="jnum_color1">
-								binary<br>
-							</span>
-							<span class="jnum_color2">
-								_00010000101010111101100101110101_10000101011101101000000101001101<br>
-								_00000011010011100110001111101110_11111010000101111000010111001011<br>
-								_00000110001101000111100011011110_10100101011000110000010001110101<br>
-								_01100011110111000010000110000101_01101010110111101111111100110111<br>
-							</span>
-						</p>
-					</div>
-					<div id="jnum_results">
-						
-					</div>
-					<img src="Images/projects/JNumbers/jnumbersexample.png" width="100%"/>
-				</div>
+				<img src="Images/projects/JCam/cams.jpg"       width="600px" height="400px" />
+				<img src="Images/projects/JCam/solarpanel.jpg" width="300px" height="400px" />
 			</div>
 		</div>
 	`;
-	
-	var jnum_res = [
-		{
-			ope: "X + Y",
-			bin: "1111101101110011001000101010_11101101101001000001010101010011_10000111101011101000001010010100_01011011100000100111011011111111_00100011010100000001101001001101_00010111011011111111001110111101_10001100100101111011110101110110_10011111101110000111001100101000_11101011000100110001000101110010",
-			hex: "FB7322A_EDA41553_87AE8294_5B8276FF_23501A4D_176FF3BD_8C97BD76_9FB87328_EB131172",
-			dec: "30,530,225,208,810,962,915,409,235,904,969,578,584,313,960,125,115,655,591,535,714,120,755,941,003,240,896,926,066",
-			nam: `
-				thirty septenvigintillion, 
-				five hundred thirty sexvigintillion, 
-				two hundred twenty-five quinvigintillion, 
-				two hundred one quattuorvigintillion, 
-				two hundred seventy trevigintillion, 
-				three hundred twenty-five duovigintillion, 
-				six hundred forty-two unvigintillion, 
-				six hundred seventy-three vigintillion, 
-				five hundred seventy-one novemdecillion, 
-				four hundred six octodecillion, 
-				eight hundred eighty-six septendecillion, 
-				two hundred twenty-six sexdecillion, 
-				two hundred ninety-five quindecillion, 
-				seven hundred eight quattuordecillion, 
-				four hundred seventy-two tredecillion, 
-				one hundred eighty-three duodecillion, 
-				five hundred seventy-one undecillion, 
-				two hundred twenty-nine decillion, 
-				seven hundred sixty-two nonillion, 
-				nine hundred seventy-eight octillion, 
-				three hundred fifty-two septillion, 
-				seven hundred thirty-nine sextillion, 
-				nine hundred twenty-two quintillion, 
-				four hundred seventy-seven quadrillion, 
-				six hundred thirty-one trillion, 
-				eight hundred five billion, 
-				eight hundred sixty-seven million, 
-				six hundred ninety-two thousand, 
-				six hundred three`
-		},
-		{
-			ope: "X - Y",
-			bin: "1111101101110011001000101010_11001100010011000110001001101000_01111100110000010111111111111010_01010100111001011010111100100001_00101111001000010000111010110111_00001011000001110000001000000000_01000001110100011011010010001011_11011000000000000011000000011110_00010101010101010001001100000100",
-			hex: "FB7322A_CC4C6268_7CC17FFA_54E5AF21_2F210EB7_0B070200_41D1B48B_D800301E_15551304",
-			dec: "3,053,022,519,372,968,836,993,790,690,880,287,400,710,298,424,202,680,393,442,099,135,908,901,426,037,083,845,9140",
-			nam: `
-				thirty septenvigintillion, 
-				five hundred thirty sexvigintillion, 
-				two hundred twenty-five quinvigintillion, 
-				one hundred ninety-three quattuorvigintillion, 
-				seven hundred twenty-nine trevigintillion, 
-				six hundred eighty-eight duovigintillion, 
-				three hundred sixty-nine unvigintillion, 
-				nine hundred thirty-seven vigintillion, 
-				nine hundred six novemdecillion, 
-				nine hundred eight octodecillion, 
-				eight hundred two septendecillion, 
-				eight hundred seventy-four sexdecillion, 
-				seven quindecillion, 
-				one hundred two quattuordecillion, 
-				nine hundred eighty-four tredecillion, 
-				two hundred forty-two duodecillion, 
-				twenty-six undecillion, 
-				eight hundred three decillion, 
-				nine hundred thirty-four nonillion, 
-				four hundred twenty octillion, 
-				nine hundred ninety-one septillion, 
-				three hundred fifty-nine sextillion, 
-				eighty-nine quintillion, 
-				fourteen quadrillion, 
-				two hundred sixty trillion, 
-				three hundred seventy billion, 
-				eight hundred thirty-eight million, 
-				four hundred fifty-nine thousand, 
-				one hundred forty 
-			`
-		},
-		{
-			ope: "X * Y",
-			bin: "1000001011111111111011010_10110000111000101101001111100100_10110100110001011111111100100011_10010110111000100000011100000110_00000100011111000011010011101010_00100010101001010000110001011101_01110101010111010001011111010001_11001010110011101110000011001010_00100010100100011110110101110110_00111100111111110010100111100111_00100001101111111011011110100011_11111110000110100100100000000100_10101011010111110011100000000100_10011010001010100010011010001111_10000001011100000010101011111100_10011101101000010011011100101111_10100110100000101010111110101101",
-			hex: "105FFDA_B0E2D3E4_B4C5FF23_96E20706_047C34EA_22A50C5D_755D17D1_CACEE0CA_2291ED76_3CFF29E7_21BFB7A3_FE1A4804_AB5F3804_9A2A268F_81702AFC_9DA1372F_A682AFAD",
-			dec: "23,021,735,409,771,272,208,778,593,349,850,056,111,658,674,422,748,091,452,974,808,723,626,303,090,554,683,133,032,618,155,742,735,738,315,130,139,7,735,292,060,400,886,513,518,540,419,005,158,315,451,679,605,174,189",
-			nam: `
-				two hundred thirty duoquinquagintillion, 
-				two hundred seventeen unquinquagintillion, 
-				three hundred fifty-four quinquagintillion, 
-				ninety-seven novemquadragintillion, 
-				seven hundred twelve octoquadragintillion, 
-				seven hundred twenty-two septenquadragintillion, 
-				eighty-seven sexquadragintillion, 
-				seven hundred eighty-five quinquadragintillion, 
-				nine hundred thirty-three quattuorquadragintillion, 
-				four hundred ninety-eight trequadragintillion, 
-				five hundred  duoquadragintillion, 
-				five hundred sixty-one unquadragintillion, 
-				one hundred sixteen quadragintillion, 
-				five hundred eighty-six novemtrigintillion, 
-				seven hundred forty-four octotrigintillion, 
-				two hundred twenty-seven septentrigintillion, 
-				four hundred eighty sextrigintillion, 
-				nine hundred fourteen quintrigintillion, 
-				five hundred twenty-nine quattuortrigintillion, 
-				seven hundred forty-eight tretrigintillion, 
-				eighty-seven duotrigintillion, 
-				two hundred thirty-six untrigintillion, 
-				two hundred sixty-three trigintillion, 
-				thirty novemvigintillion, 
-				nine hundred five octovigintillion, 
-				five hundred forty-six septenvigintillion, 
-				eight hundred thirty-one sexvigintillion, 
-				three hundred thirty quinvigintillion, 
-				three hundred twenty-six quattuorvigintillion, 
-				one hundred eighty-one trevigintillion, 
-				five hundred fifty-seven duovigintillion, 
-				four hundred twenty-seven unvigintillion, 
-				three hundred fifty-seven vigintillion, 
-				three hundred eighty-three novemdecillion, 
-				one hundred fifty-one octodecillion, 
-				three hundred one septendecillion, 
-				three hundred ninety-seven sexdecillion, 
-				seven hundred thirty-five quindecillion, 
-				two hundred ninety-two quattuordecillion, 
-				sixty tredecillion, 
-				four hundred  duodecillion, 
-				eight hundred eighty-six undecillion, 
-				five hundred thirteen decillion, 
-				five hundred eighteen nonillion, 
-				five hundred forty octillion, 
-				four hundred nineteen septillion, 
-				five sextillion, 
-				one hundred fifty-eight quintillion, 
-				three hundred fifteen quadrillion, 
-				four hundred fifty-one trillion, 
-				six hundred seventy-nine billion, 
-				six hundred five million, 
-				one hundred seventy-four thousand, 
-				one hundred eighty-nine 
-			`
-		},
-		{
-			ope: "X / Y",
-			bin: "11110001010100110010100111111000",
-			hex: "_F15329F8",
-			dec: "4,048,759,288",
-			nam: `
-				four billion, 
-				forty-eight million, 
-				seven hundred fifty-nine thousand, 
-				two hundred eighty-eight 
-			`
-		},
-		{
-			ope: "X % Y",
-			bin: "1100111010101110101001111111_01010000101000001000101010100110_00110110010101101100001011101011_10011100010101110000101100001000_11011101001010001110010001100100_11011110011111111111111001011100_11000101010111111110010110110110_10111011011110000000010111110011",
-			hex: "CEAEA7F_50A08AA6_3656C2EB_9C570B08_DD28E464_DE7FFE5C_C55FE5B6_BB7805F3",
-			dec: "5,842,814,837,206,740,630,218,700,424,608,477,045,572,517,231,556,362,733,617,109,134,271,026,038,259",
-			nam: `
-				five quattuorvigintillion, 
-				eight hundred forty-two trevigintillion, 
-				eight hundred fourteen duovigintillion, 
-				eight hundred thirty-seven unvigintillion, 
-				two hundred six vigintillion, 
-				seven hundred forty novemdecillion, 
-				six hundred thirty octodecillion, 
-				two hundred eighteen septendecillion, 
-				seven hundred  sexdecillion, 
-				four hundred twenty-four quindecillion, 
-				six hundred eight quattuordecillion, 
-				four hundred seventy-seven tredecillion, 
-				forty-five duodecillion, 
-				five hundred seventy-two undecillion, 
-				five hundred seventeen decillion, 
-				two hundred thirty-one nonillion, 
-				five hundred fifty-six octillion, 
-				three hundred sixty-two septillion, 
-				seven hundred thirty-three sextillion, 
-				six hundred seventeen quintillion, 
-				one hundred nine quadrillion, 
-				one hundred thirty-four trillion, 
-				two hundred seventy-one billion, 
-				twenty-six million, 
-				thirty-eight thousand, 
-				two hundred fifty-nine 
-			`
-		}
-	]
-	var jres = document.getElementById("jnum_results");
-	for (var i = 0; i < jnum_res.length; i++) {
-		jres.innerHTML += `
-		<div class="jnum_numdesc" style="width:calc(90% + 10px);">
-			<p>
-				<span class="jnum_numtitle">` + jnum_res[i].ope + `</span><br>
-				
-				<span class="jnum_color1">Value<br></span> 
-				<span class="jnum_color2">` + jnum_res[i].dec + `<br></span>
-				
-				<span class="jnum_color1">Name<br></span>
-				<span class="jnum_color2">` + jnum_res[i].nam + `<br></span>
-				
-				<span class="jnum_color1">Binary<br></span>
-				<span class="jnum_color2">` + jnum_res[i].bin + `<br></span>
-
-				<span class="jnum_color1">Hexadecimal<br></span>
-				<span class="jnum_color2">` + jnum_res[i].hex + `<br></span>
-			</p>
-		</div>
-		`;
-	}
-}*/
+}
 function Load_JTransmission() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
@@ -515,7 +237,7 @@ function Load_JTransmission() {
 			<div id="ProjectInfo">
 				<p>
 					JTransmission is the first application I made using JCode. I made it to demonstrate what <i>could</i> be made with the engine. The project 
-					doesn't currently have any plans for updates outside of testing the security sent information through <a onclick="Load_JRelay()">JRelay</a>. 
+					doesn't currently have any plans for updates outside of testing the security sent information through <a onclick="Load_JNetwork()">JNetwork</a>. 
 					It's a very simple network communication application. A user can host a chat room directly from their computer on their local network; Over 
 					the internet if they've port forwarded. A password can be set to so that only users with it can join. All data shared between the client and 
 					the server are (unsecurely) encrypted.
@@ -668,7 +390,7 @@ function Load_Snake() {
 				The first feature is custom colors; In the settings you can choose the colors for the color of the app's background, the text, the game's background, and the snake. The color for each 
 				can be changed with a HSL color picker I implemented. I got the idea 
 				for this from my girlfriend which is why I chose this as the first game application for JCode. The second feature is multiplayer; This feature is only really usable on PC because 
-				neworking/threading doesn't function as well on android using JRelay with large sets of communication; At least with my Samsung Note 4 dispite using mostly poll based sockets. As 
+				neworking/threading doesn't function as well on android using JNetwork with large sets of communication; At least with my Samsung Note 4 dispite using mostly poll based sockets. As 
 				far as functionality with multiplayer goes, I was able to play a game on localhost running both clients. What does work on PC <i>and</i> mobile I game scanning - Since the app isn't run on a  
 				server connecting to each other is done over LAN, so if someone is hosting a game on your network the app will scan for it. 
 			</p>
@@ -859,7 +581,7 @@ function Load_Aura() {
 		</div>
 	`;
 }
-function Load_SlideController() {
+/*function Load_SlideController() {
 	pageContent.innerHTML = `
 		<div id="ProjectDescription">
 			<div id="ProjectTitle">
@@ -872,7 +594,7 @@ function Load_SlideController() {
 					project currently consists of an old slider phone (Samsung M920) that I wanted to turn into a wireless keyboard/controller. It wouldn't be as 
 					underdeveloped as it is if the phone wasn't running Android 2.1. I easily spent at least 100 hours just getting the application to compile 
 					for the phone. Even after creating a template that would work for it, the phone will only accept the app when <i>it</i> wants to and I've tried close to 
-					everything to fix this. The app was successfully able to send key presses to a JRelayServer I threw together on my main computer but by this 
+					everything to fix this. The app was successfully able to send key presses to a JNetworkServer I threw together on my main computer but by this 
 					time it was starting to be more difficult and I was losing patience. I'll revisit this project when either I regain enough patience to deal with 
 					the phone again or end up buying/obtaining another slider phone. 
 				</p>
@@ -883,7 +605,7 @@ function Load_SlideController() {
 			</div>
 		</div>
 	`;
-}
+}*/
 // Other Projects
 function Load_MyComputers() {
 	pageContent.innerHTML = `
@@ -904,7 +626,7 @@ function Load_MyComputers() {
 						
 						<p>
 							I use this computer for most of my development. It's the 3rd computer I've built myself. It also has an older NZXT liquid 
-							cooler that got my old AMD FX-8350 to 3 degrees celsius idle at times.
+							cooler that got my old AMD FX-8350 to 3 degrees celsius idle.
 						</p>
 						
 						<h5>[CPU]</h5>
@@ -1043,7 +765,6 @@ function LinkTo_Override() {
 	keyDownHandle = null,
 	keyUpHandle = null;
 	scrollHandler = null;
-
 	CURRENTPAGE = "PROJECTS";
 }
 function LinkTo_Lelantos() {
@@ -1058,11 +779,15 @@ function LinkTo_JScene() {
 	LinkTo_Override();
 	Load_JScene();
 }
-function LinkTo_JRelay() {
+function LinkTo_JNetwork() {
 	LinkTo_Override();
-	Load_JRelay();
+	Load_JNetwork();
 }
-/*function LinkTo_JNumbers() {
+function LinkTo_JCrypt() {
 	LinkTo_Override();
-	LinkTo_JNumbers();
-}*/
+	Load_JCrypt();
+}
+function LinkTo_JCam() {
+	LinkTo_Override();
+	Load_JCam();
+}

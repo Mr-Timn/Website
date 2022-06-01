@@ -9,6 +9,45 @@ var CurrentHue, HueIncDelay;
 var SummaryFontSize = -1;
 var AdjCanvasWidth = -1, NavBuffer = -1, IntroDiv1 = -1, IntroBuffer1 = -1, IntroBuffer2 = -1;
 
+function SUMMARY_PAGE_LOAD() {
+	//console.log("Loaded summary");
+
+	LHEAD = new SLett("\\");
+	SummaryLetters = [];
+	CurrentHue = 0;
+	HueIncDelay = 0;
+	SummaryFrame = 0;
+	SummaryFontSize = -1;
+	SummaryContinue = true;
+	IgnoreContinue = false;
+
+	canvasHandle = Summary_CanvasHandle;
+	keyDownHandle = Summary_KeyDownHandle;
+	keyUpHandle = Summary_KeyUpHandle;
+	resizeHandler = Summary_ResizeHandle;
+	clickHandler = Summary_ClickHandle;
+
+	// Start Summary
+	var wait = setInterval(function() {
+		if (SummaryContinue) {
+			SummaryContinue = false;
+			if (Summary_Intro_Reload()) clearInterval(wait);
+			SummaryFrame++;
+		}
+	}, 250);
+}
+function SUMMARY_PAGE_UNLOAD() {
+	pageUnloadTimer = 0;
+}
+
+/***** Playing Summary *****/
+function AutoContinue(Duration) {
+	IgnoreContinue = true;
+	setTimeout(function() { SummaryContinue = true; IgnoreContinue = false; }, Duration);
+}
+
+/*
+
 var msgs_c1 = [
 	{ w: -1, spx: 5, spy: 5, hide: false, m: "My name is Jordan Hoosman"        },
 	{ w: -1, spx: 5, spy: 5, hide: false, m: "And I'm a Computer Engineer"      },
@@ -25,7 +64,7 @@ var msgs_c2 = [
 	{ w: -1, spx: 5, spy: 5, hide:  true, m: "that can recognize individual" },
 	{ w: -1, spx: 5, spy: 5, hide:  true, m: "faces and interpret speech!" },
 
-	{ w: -1, spx: 5, spy: 5, hide:  true, m: "Using the attachment below" },
+	{ w: -1, spx: 5, spy: 5, hide:  true, m: "Using this attachment" },
 	{ w: -1, spx: 5, spy: 5, hide:  true, m: "Anton can unlock my door" }, 
 	{ w: -1, spx: 5, spy: 5, hide:  true, m: "when I ask it while my face" },
 	{ w: -1, spx: 5, spy: 5, hide:  true, m: "is visible" },
@@ -51,43 +90,7 @@ var msgs_c3 = [
 	{ w: -1, spx: 0, spy: 2, hide: false, m: "Home", link: "src://INDEX" },
 ];
 
-function SUMMARY_PAGE_LOAD() {
-	//console.log("Loaded summary");
-
-	LHEAD = new SLett("\\");
-	SummaryLetters = [];
-	CurrentHue = 0;
-	HueIncDelay = 0;
-	SummaryFrame = 0;
-	SummaryFontSize = -1;
-	SummaryContinue = true;
-	IgnoreContinue = false;
-
-	canvasHandle = Summary_CanvasHandle;
-	keyDownHandle = Summary_KeyDownHandle;
-	keyUpHandle = Summary_KeyUpHandle;
-	resizeHandler = Summary_ResizeHandle;
-	clickHandler = Summary_ClickHandle;
-
-	// Start Summary
-	var wait = setInterval(function() {
-		if (SummaryContinue) {
-			SummaryContinue = false;
-			if (Summay_Intro_Reload()) clearInterval(wait);
-			SummaryFrame++;
-		}
-	}, 250);
-}
-function SUMMARY_PAGE_UNLOAD() {
-	pageUnloadTimer = 0;
-}
-
-/***** Playing Summary *****/
-function AutoContinue(Duration) {
-	IgnoreContinue = true;
-	setTimeout(function() { SummaryContinue = true; IgnoreContinue = false; }, Duration);
-}
-function Summay_Intro_Reload() {
+function Summary_Intro_Reload() {
 	NavBuffer = GetElementXWidth("Navigation");
 	AdjCanvasWidth = windowWidth - NavBuffer;
 	
@@ -124,7 +127,7 @@ function Summay_Intro_Reload() {
 		// About Anton
 		if (SummaryFrame == 4) {
 			Summary_NewMessage(msgs_c2);
-			PositionMessage(msgs_c2, 0, 0, -IntroBuffer1, 120, 60, 15);
+			PositionMessage(msgs_c2, 0, 0, -IntroBuffer1, 120, 60, 5);
 
 			CanvasAddImage("Images/summary/Anton.png"    , 0, 0);
 			CanvasAddImage("Images/summary/doorlock1.png", 0, 0);
@@ -134,10 +137,20 @@ function Summay_Intro_Reload() {
 		if (SummaryFrame >= 5 && SummaryFrame <= 9) {
 			if (SummaryFrame == 5) MessageShow(msgs_c2, 1, 5);
 			
-			canvasImages[0].width = IntroDiv1;          canvasImages[0].height = windowHeight - 150;
-			canvasImages[1].width = AdjCanvasWidth / 6; canvasImages[1].height = AdjCanvasWidth / 5;
-			canvasImages[2].width = AdjCanvasWidth / 6; canvasImages[2].height = AdjCanvasWidth / 5;
+			if (windowHeight > windowWidth) {
+				canvasImages[0].width = AdjCanvasWidth / 2; canvasImages[0].height = windowHeight / 2;
+				canvasImages[1].width = AdjCanvasWidth / 6; canvasImages[1].height = AdjCanvasWidth / 4;
+				canvasImages[2].width = AdjCanvasWidth / 6; canvasImages[2].height = AdjCanvasWidth / 4;
 
+				PositionMessage(msgs_c2, 1, 5, -IntroBuffer1, (windowHeight / 2 + 70), 15);
+			} else {
+				canvasImages[0].width = IntroDiv1;          canvasImages[0].height = windowHeight - 150;
+				canvasImages[1].width = AdjCanvasWidth / 6; canvasImages[1].height = AdjCanvasWidth / 5;
+				canvasImages[2].width = AdjCanvasWidth / 6; canvasImages[2].height = AdjCanvasWidth / 5;
+				
+				PositionMessage(msgs_c2, 1, 5, -IntroBuffer2, 100, 15);
+			}
+			
 			var dir = 0;
 			SummaryLetters[0].setgoal(NavBuffer + 20, 15);
 			for (var i = 1; i < SummaryLetters.length; i++) {
@@ -151,24 +164,39 @@ function Summay_Intro_Reload() {
 				}
 				if (i % 8 == 0) dir++;
 			}
-			
-			PositionMessage(msgs_c2, 1, 5, -IntroBuffer2, 100, 15);
 		}
-		if (SummaryFrame == 6) { 
-			ShrinkMessages(msgs_c2, 1, 5, -IntroBuffer2, 100, 10);
+		if (SummaryFrame == 6) {
+			if (windowHeight > windowWidth) {
+				ShrinkMessages(msgs_c2, 1, 5, -IntroBuffer1, (windowHeight / 2 + 70), 15);
+			} else {
+				ShrinkMessages(msgs_c2, 1, 5, -IntroBuffer2, 100, 10);
+			}
+			
 			AutoContinue(1500); 
 		}
 		if (SummaryFrame == 7) {
 			MessageHide(msgs_c2, 1, 5); 
 			MessageShow(msgs_c2, 6, 12);
-
-			GrowMessages(msgs_c2,  6,  9, -IntroBuffer2,                   100, 15);
-			GrowMessages(msgs_c2, 10, 12, -IntroBuffer1, -(AdjCanvasWidth / 5), 25);
+			
+			if (windowHeight > windowWidth) {
+				GrowMessages(msgs_c2,  6,  9, -IntroBuffer1, windowHeight / 2 + 40, 15);
+				GrowMessages(msgs_c2, 10, 12, windowWidth - (msgs_c2[11].w + 10), 230, 25);
+			} else {
+				GrowMessages(msgs_c2,  6,  9, -IntroBuffer2,                   100, 15);
+				GrowMessages(msgs_c2, 10, 12, -IntroBuffer1, -(AdjCanvasWidth / 5), 25);
+			}
+			
 			AutoContinue(2000);
 		}
 		if (SummaryFrame == 8) {
-			PositionMessage(msgs_c2,  6,  9, -IntroBuffer2,                   100, 15);
-			PositionMessage(msgs_c2, 10, 12, -IntroBuffer1, -(AdjCanvasWidth / 5), 15);
+			if (windowHeight > windowWidth) {
+				PositionMessage(msgs_c2,  6,  9, -IntroBuffer1, windowHeight / 2 + 40, 10);
+				PositionMessage(msgs_c2, 10, 12,  windowWidth - (msgs_c2[11].w + 10), 230, 10);
+			} else {
+				PositionMessage(msgs_c2,  6,  9, -IntroBuffer2,                   100, 10);
+				PositionMessage(msgs_c2, 10, 12, -IntroBuffer1, -(AdjCanvasWidth / 5), 10);
+			}
+			
 		}
 		if (SummaryFrame == 9) {
 			PositionMessage(msgs_c2, 0, msgs_c2.length - 1, -1, -1, 15);
@@ -179,13 +207,65 @@ function Summay_Intro_Reload() {
 	// Start message 3
 	else if (SummaryFrame == 10) {
 		Summary_NewMessage(msgs_c3);
+		
+		if (msgs_c3[0].w > AdjCanvasWidth) {
+			
+		}
+
 		GrowMessages(msgs_c3, 0, msgs_c3.length - 1, -IntroBuffer1, 100, 10);
 	}
 
 	// Done
 	else return true;
+}*/
 
-	return false;
+var msgs_c1 = [
+	{ w: -1, spx: 5, spy: 5, hide: false, m: "My name is Jordan Hoosman"        },
+	{ w: -1, spx: 5, spy: 5, hide: false, m: "And I'm a Computer Engineer"      },
+	{ w: -1, spx: 5, spy: 5, hide: false, m: "With a minor in Cyber Security"   },
+	{ w: -1, spx: 0, spy: 5, hide: false, m: "" },
+	{ w: -1, spx: 5, spy: 5, hide: false, m: "I really enjoy programming!"      },
+	{ w: -1, spx: 5, spy: 5, hide: false, m: "Check out what I've made so far!" },
+	
+];
+function Summary_Intro_Reload() {
+	NavBuffer = GetElementXWidth("Navigation");
+	AdjCanvasWidth = windowWidth - NavBuffer;
+	
+	IntroDiv1 = AdjCanvasWidth / 3;
+	IntroBuffer1 = NavBuffer + (AdjCanvasWidth / 2);
+	IntroBuffer2 = (NavBuffer + IntroDiv1) + ((windowWidth - (NavBuffer + IntroDiv1)) / 2);
+
+	if (SummaryFrame >= 0 && SummaryFrame <= 2) {
+		if (SummaryFrame != 0) UpdateMessageWidth(msgs_c1);
+		
+		if (SummaryFrame == 0) {
+			Summary_NewMessage(msgs_c1);
+			PositionMessage(msgs_c1, 0, msgs_c1.length - 1, -IntroBuffer1, 120, 10);
+		} else if (SummaryFrame == 1) {
+			PositionMessage(msgs_c1, 0, msgs_c1.length - 2, -1, -1, 10);
+			
+			var dir = 0; let start = 109; // SummaryLetters[5]
+			SummaryLetters[start].setgoal(NavBuffer + 20, 15);
+			for (var i = 1; i < 32; i++) {
+				var ilett = SummaryLetters[start + i];
+				var jlett = SummaryLetters[start + i - 1];
+				switch (dir) {
+					case 0: ilett.setgoal(jlett.gx + ((AdjCanvasWidth - 50) / 8), jlett.gy); break;
+					case 1: ilett.setgoal(jlett.gx                    , jlett.gy + ((windowHeight - (30 + 40)) / 8)); break;
+					case 2: ilett.setgoal(jlett.gx - ((AdjCanvasWidth - 50) / 8), jlett.gy); break;
+					case 3: ilett.setgoal(jlett.gx                    , jlett.gy - ((windowHeight - (30 + 40)) / 8)); break;
+				}
+				if (i % 8 == 0) dir++;
+			}
+		} else if (SummaryFrame == 2) {
+
+		}
+
+		return false;
+	}
+	// Done
+	else return true;
 }
 function Summary_NewMessage(msg) {
 	LHEAD.right = null;
@@ -206,23 +286,8 @@ function Summary_NewMessage(msg) {
 function Summary_CanvasHandle() {
 	ctx.clearRect(0, 0, windowWidth, windowHeight);
 	
-	HueIncDelay = (HueIncDelay + 1) % 10;
-
-	SummaryFontSize = Math.max(windowWidth / 55, 25);
-	ctx.font = SummaryFontSize + "px serif";
-	ctx.textBaseline = "top"
-	for (var i = 0; i < SummaryLetters.length; i++) {
-		var lett = SummaryLetters[i];
-		if (lett.hide) continue;
-		if (lett.canmove) lett.move();
-		lett.draw();
-
-		if (SummaryFrame == 11 && HueIncDelay == 0) {
-			lett.reloadcolor(lett.hue + 1);
-		}
-	}
-	
 	ctx.strokeStyle = "white";
+	ctx.font = SummaryFontSize + "px serif";
 	if (SummaryFrame == 2 || SummaryFrame == 5 || SummaryFrame == 9) ctx.strokeText("[ Click to continue ]", IntroBuffer1 - 150, windowHeight - 100, 300);
 	if (SummaryFrame == 6) ctx.strokeText("[ Click to continue ]", IntroBuffer2 - 150, windowHeight - 100, 300);
 
@@ -231,12 +296,11 @@ function Summary_CanvasHandle() {
 		ctx.drawImage(canvasImages[0].img, SummaryLetters[pp - 1].x + 40, SummaryLetters[0].y + 40, canvasImages[0].width, canvasImages[0].height);
 
 		if (SummaryFrame >= 8) {
-			ctx.drawImage(canvasImages[1].img, SummaryLetters[12].x - (AdjCanvasWidth / 3), SummaryLetters[16].y - (canvasImages[1].height + 20), canvasImages[1].width, canvasImages[1].height);
-			ctx.drawImage(canvasImages[2].img, SummaryLetters[13].x - (AdjCanvasWidth / 6), SummaryLetters[17].y - (canvasImages[2].height + 20), canvasImages[2].width, canvasImages[2].height);
-		}
-		if (SummaryFrame >= 8) {
 			var ix = SummaryLetters[SummaryLetters.length - 1].x + SummaryLetters[SummaryLetters.length - 1].w;
 			var iy = SummaryLetters[SummaryLetters.length - 1].y;
+
+			ctx.drawImage(canvasImages[1].img, SummaryLetters[12].x - (AdjCanvasWidth / 3), SummaryLetters[5].y + 30, canvasImages[1].width, canvasImages[1].height);
+			ctx.drawImage(canvasImages[2].img, SummaryLetters[13].x - (AdjCanvasWidth / 6), SummaryLetters[6].y + 30, canvasImages[2].width, canvasImages[2].height);
 			
 			ctx.drawImage(canvasImages[3].img, ix, iy, canvasImages[3].width, canvasImages[3].height);
 			ctx.font = "15px serif";
@@ -267,11 +331,24 @@ function Summary_CanvasHandle() {
 			ctx.stroke();
 		}
 	}
+
+	HueIncDelay = (HueIncDelay + 1) % 10;
+	SummaryFontSize = Math.max(windowWidth / 55, 25);
+	ctx.font = SummaryFontSize + "px serif";
+	ctx.textBaseline = "top"
+	for (var i = 0; i < SummaryLetters.length; i++) {
+		var lett = SummaryLetters[i];
+		if (lett.hide) continue;
+		if (lett.canmove) lett.move();
+		if (!(SummaryFrame <= 9 && lett.l == " ")) lett.draw();
+
+		if (SummaryFrame == 11 && HueIncDelay == 0) lett.reloadcolor(lett.hue + 1);
+	}
 }
 function Summary_ResizeHandle(diff) {
 	for (var i = 0; i < SummaryLetters.length; i++) SummaryLetters[i].reloadsize();
 	SummaryFrame--;
-	Summay_Intro_Reload();
+	Summary_Intro_Reload();
 	SummaryFrame++;
 
 }
@@ -303,7 +380,7 @@ function Summary_KeyUpHandle(e) {
 	if (e.keyCode == 27) {
 		SummaryFrame -= 2;
 		if (SummaryFrame <= 2) SummaryFrame = 0;
-		Summay_Intro_Reload();
+		Summary_Intro_Reload();
 	}
 }
 
@@ -638,5 +715,3 @@ function GrowMessages(msg, mstart, mend, startx, starty, delay) {
 function ShrinkMessages(msg, mstart, mend, startx, starty, delay) {
 	AnimateMessageHandler(msg, mstart, mend, startx, starty, delay, ShrinkSLett);
 }
-
-

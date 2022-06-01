@@ -2,13 +2,6 @@
 // Made By Jordan Hoosman
 //
 
-//
-// DEVELOPER NOTE: 
-// 		> I hate JavaScript
-// 		> Send help
-// 		> "This would be easier in C++" - A   c o r r e c t   thought I had
-//
-
 var contact_data = [
 	{
 		type: "Email:",

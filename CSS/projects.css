@@ -8,7 +8,7 @@
     width: calc(100% - var(--nav-width));
     height: 100%;
     color: white;
-
+	left: 20px;
     text-align: center;
 }
 .Project {
@@ -22,7 +22,6 @@
 
     width: 15%;
     height: 70%;
-    
     margin-left: 5%;
     margin-right: 5%;
 
@@ -54,13 +53,12 @@
 
     position: absolute;
     top: 2%;
-    left: calc(var(--nav-width));
+    left: calc(var(--nav-width) + 20px);
     width: calc(98% - var(--nav-width));
 	padding-bottom: 10px;
     height: 96%;
 
     color: white;
-
     border: 2px dashed;
 }
 #ProjectTitle {
@@ -226,3 +224,4 @@
 	
 	display: inline-block;
 }
+
