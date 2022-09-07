@@ -52,29 +52,17 @@ function ABOUT_PAGE_LOAD() {
 					programming alorithms, practices, and their applications. This includes a working understanding with Bash, C, C++, Java including 
 					Spring Tools 4, Python, Lua, and (HTML/CSS/Javascript - DOM, JQuery, and NodeJS). I'm less familar but comfortable (enough) in Assembly 
 					- Both struturally and specifically with MIPS; Jekyll, and Verilog. I use C++ the most out of any of the other languages; I love C++ 
-					including the reasons why most don't. I have a long term goal of creating a system of connected computers over a network I create, 
-					mantain, and control. As I improve my hardware skills/understanding the idea will take shape - I've already made progress with the aspect 
-					of handling my devices GUI's and networking/security with some abstraction. I would only call myself an expert in in C/C++ and DOM 
-					Javascript; Just fluent or otherwise for rest. 
+					including the reasons why most don't haha.
 				<p>
 
 				<div class="TextDivider"></div>
-				
-				<p class="aboutblock">
-					The environments I use the most often are Visual Studio Community, Visual Studio Code since I code the most in C/C++ and HTML etc. I 
-					infrequently use Eclipse for Java, Notepad++ when I don't want to use Visual Studio Code, Android Studio, Quartus Prime and 
-					ModelSim for CPU design using Verilog. 
-				</p>
 
 				<h5><u class="aboutblock">Operating Systems</u></h5>
 				<p class="aboutblock">
 					I primarily use Debian on my main computer day-to-day so I have a familiarity with it and other debian-based distros. I've gone as far to 
-					set up my main computer to run Debian on one monitor and Window on the other; 
-					Shown here - <a href="https://wiki.debian.org/VGAPassthrough">VGAPassthrough</a> - As described in the link, but the actual process 
-					was <b>not</b> that easy. I even created a script to swap between doing that and only running Debain. With Windows I have a fair understanding of 
-					the control panel and task manager. I don't know if it counts as a skill since I have no reference but myself, but I can navigate through Windows 
-					with only keyboard. The only other operating systems I'm familair with somewhat or otherwise are RHEL because that's what my job uses, Kali Linux, 
-					and Raspberry Pi OS.
+					set up my main computer to run Debian on one monitor and Window on the other via VGAPassthrough. With Windows I have a fair understanding between 
+					the control panel, task manager, scheduling, permissions, and some cmd prompt/shell. I have some expirence with Mac and can use it comfortably. 
+					Other operating systems I'm somewhat familair with are Kali Linux, and Raspberry Pi OS, and RHEL.
 				</p>
 
 				<h5><u class="aboutblock">Cyber Security</u></h5>
@@ -96,20 +84,18 @@ function ABOUT_PAGE_LOAD() {
 					diodes, and MOFSETS. I don't have any projects to show for my understaning yet but I should as I continue working with more circuits. I also use LTSpice 
 					for virtual circuit design on my computer. 
 				</p>
-
+			</div>
+			<div class="AboutText" id="AboutText2" style="overflow-y: scroll;">
 				<h3><u class="aboutblock">My Hobbies</u></h3>
 				<p class="aboutblock">
 					My hobbies include origami, piano, bird watching, and programming. I've made origami for around 11 years or so now.
 					My favorite thing to make is various western dragons and angels. I've been playing piano for around 7 years now. I'm not 
 					incredibly good at it but I can play Chopin's Nocturne Op. 2 No. 1 and 2; As well as Beethoven's Moonlight 
 					Sonata Mov. 1 and Pathetique 2nd movement. My girlfriend is an Animal Ecologist at Iowa State and loves to 
-					bird! She has over 400 species seen and currently ranked the 94th birder in Iowa on ebird. I follow at #239 but 
+					bird! She has over 500 species seen and currently ranked the 55th birder in Iowa on ebird. I follow at #239 but 
 					mostly because of her! You can see some of the pictures she took; Including one of our favorites, a Killdeer, in the background. Watch, they'll
 					say hello to you!
 				</p>
-
-			</div>
-			<div class="AboutText" id="AboutText2" style="overflow-y: scroll;">
 				<h3><u class="aboutblock">Brief history of my programing projects</u></h3>
 				<p class="aboutblock">
 					I started programming in Lua my freshman year in high school around 2013 when I used to play Roblox a lot. 
@@ -146,7 +132,7 @@ function ABOUT_PAGE_LOAD() {
 					open source API SDL2. JScene uses it's functions to help organize and manage resources in it's usage as well as speeding up the process of making my applications  functional. 
 					It also is capable of processing video and playing with ffmpeg. Another API I made is called <a onclick="LinkTo_JNetwork()">JNetwork</a>. It can be used stand alone to handle 
 					network connections for an applications or in conjunction with JScene for a project. JCrypt is my cryptography engine. It uses GMP large number arthimetic and 
-					has most modern standerds like RSA, Diffie-Hellman, and ECDH. More recently I've started adding post-quantum algorithms such as Super-isogeny Diffie-Hellman and Falcon.
+					has most modern standerds like RSA, Diffie-Hellman, and ECDH. More recently I've started adding post-quantum algorithms such as Super-isogeny Diffie-Hellman, Kyber, and Falcon.
 					Check out the <a onclick=NavButtonClick('PROJECTS')>Projects</a> page or above links for a full description of each.
 				</p>
 			</div>

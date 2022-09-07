@@ -121,8 +121,9 @@ function Load_JCrypt() {
 			<div id="ProjectInfo">
 				<p>
 					JCrypt is an cryptography API I made for encrypting/decrypting data with various modern or simple (a)symmetric cryptographic functions. It uses GMP for
-					large number calculation for it's classical algorithms(RSA/DH). Recently I started implementing post-quantum algorithms like Supersingular Isogeny Diffie-Hellman 
-					and Falcon. Argon2, which won the recent password hashing competition, has also been integrated into the library.  
+					large number calculation for it's classical algorithms(RSA/DH). Most importantly it includes the post-quantum algorithms <a onclick="https://sike.org/"> Supersingular Isogeny Diffie-Hellman</a>,  
+					<a onclick="https://pq-crystals.org/kyber/">Kyber</a>, and <a onclick="https://falcon-sign.info/">Falcon</a>. <a onclick="https://github.com/P-H-C/phc-winner-argon2">Argon2, which won the 2015 password hashing competition, 
+					has also been integrated into the library.  
 					Like the rest of the library, it's cross platform compatible with Linux, Windows 10, Android, iOS. Parts of the library have been rewritten to work with 
 					Arduino ESP8266/32; This includes all ECC curves and post-quantum algorithms. 
 				</p>
@@ -176,7 +177,9 @@ function Load_JNetwork() {
 				</p>
 				<p>
 					<span style="color:var(--text-color-orange)">JSecure</span> is a higher level implementation using <a onclick="Load_JCrypt()">JCrypt</a> and JSocket(Client/Server). Using 
-					the hooks as described in JClient/JServer it combines the two API to connect and communicate securely.
+					the hooks as described in JClient/JServer it combines the two API to connect and communicate securely. To work around the need for a certificate authority or having to enter a 
+					public key to the app, each connection uses the password to generate and validate signatures to prevent man-in-the-middle attacks. You can watch my demonstration and in depth explanation 
+					<a href="https://www.tiktok.com/@theycallmethelegend/video/7090604871044402475">here</a> on TikTok!
 				</p>
 			</div>
 
@@ -206,23 +209,40 @@ function Load_JCam() {
 			</div>
 			<div id="ProjectInfo">
 				<p>
-					JCam is a WiFi security camera that uses post-quantum encryption to establish secure connections before streaming. This includes 2 types of 
-					cameras; Arduino(ESP8266/32) cameras and any device that supports USB cameras. The project is built on top of my JCode library so the cameras 
-					can be connected to from pretty much any device (Android/iOS/Windows/Linux). It is an ongoing project and I hope to sell them in the future.
-					I'm still implementing more algorithms into <a onclick="LinkTo_JCrypt()">JCrypt</a> but currently the cameras can use: Elliptic-curve Diffie-Hellman or Superisogeny 
-					Diffie-Helllman for key exchanging, Falcon for verifying signatures, and AES for encrypting the camera's stream.
+					Watch my demo on <a href="https://www.tiktok.com/@theycallmethelegend/video/7090604871044402475">TikTok</a>!
 				</p>
 				<p>
-					To work around the need for a certificate authority or having to enter a public key to the app, each connection uses the password to generate 
-					and validate signatures to prevent man-in-the-middle attacks. You can watch my demonstration and in depth explanation 
-					<a href="https://www.tiktok.com/@theycallmethelegend/video/7090604871044402475">here</a> on TikTok!
+					JCam is a WiFi security camera that uses post-quantum encryption to establish secure connections before streaming. This includes 2 types of 
+					cameras; Arduino(ESP8266/32) cameras and any device that supports USB cameras (RaspberryPi, PC). The project is built on top of my JCode library so the cameras 
+					can be connected to from pretty much any device (Android/iOS/Windows/Linux). It is an ongoing project and I hope to sell them in the future.
+					I'm still implementing more algorithms into <a onclick="LinkTo_JCrypt()">JCrypt</a> but currently the cameras can use Elliptic-curve Diffie-Hellman or 
+					<a onclick="https://pq-crystals.org/kyber/">Kyber</a> for key exchanging; Falcon for verifying signatures, and AES for encrypting the camera's stream. The level
+					of security can be changed from the app temporarily or permanently. 
+				</p>
+				<p>
+					The Arduino cameras themselves can't store video yet but the RaspberryPi can if for it's own stream and any streams connected to it.  
 				</p>
 
+				<p>Here are the cams that are currently setup in my house; My girlfriend and I primarily use them for watching my cat while we are away. The camera on the left is plugged into my 
+				RaspberryPi which also acts as a proxy device for viewing multiple camera streams. The camera on the right is a ESP32-Cam with a 3d printed case attached to a micro servo
+				so the camera can rotate. </p>
+				<img src="Images/projects/JCam/picam.jpg" width="200px" height="250px" />
+				<img src="Images/projects/JCam/ceilingcam.jpg" width="200px" height="250px" />
+				
 				<p>
-					Here are a couple pictures of the Prototype MK 3: The Birdhouse! I built it using cardboard from the box a network switch I bought came in. 
+					The design of the app itself is still a work in progress as I'm still working on my design skills but everything functionally works. Here are some screenshots from checking
+					on my cat while on vacation.
 				</p>
-				<img src="Images/projects/JCam/cams.jpg"       width="600px" height="400px" />
-				<img src="Images/projects/JCam/solarpanel.jpg" width="300px" height="400px" />
+				<img src="Images/projects/JCam/capture1.png" width="500px" height="250px" />
+				<img src="Images/projects/JCam/capture2.png" width="500px" height="250px" />
+				<img src="Images/projects/JCam/capture3.png" width="500px" height="250px" />
+				
+				<p>
+					Here are a couple pictures of the Prototype MK 3: The Birdhouse as in the TikTok linked above. It's made mostly from cardboard and tape. I only made the design for fun/testing purposes so the 
+					cameras are no longer in use.
+				</p>
+				<img src="Images/projects/JCam/cams.jpg"       width="400px" height="250px" />
+				<img src="Images/projects/JCam/solarpanel.jpg" width="200px" height="250px" />
 			</div>
 		</div>
 	`;
