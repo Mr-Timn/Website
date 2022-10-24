@@ -122,7 +122,7 @@ function Load_JCrypt() {
 				<p>
 					JCrypt is an cryptography API I made for encrypting/decrypting data with various modern or simple (a)symmetric cryptographic functions. It uses GMP for
 					large number calculation for it's classical algorithms(RSA/DH). Most importantly it includes the post-quantum algorithms <a onclick="https://sike.org/"> Supersingular Isogeny Diffie-Hellman</a>,  
-					<a onclick="https://pq-crystals.org/kyber/">Kyber</a>, and <a onclick="https://falcon-sign.info/">Falcon</a>. <a onclick="https://github.com/P-H-C/phc-winner-argon2">Argon2, which won the 2015 password hashing competition, 
+					<a onclick="https://pq-crystals.org/kyber/">Kyber</a>, and <a onclick="https://falcon-sign.info/">Falcon</a>. <a onclick="https://github.com/P-H-C/phc-winner-argon2">Argon2</a>, which won the 2015 password hashing competition, 
 					has also been integrated into the library.  
 					Like the rest of the library, it's cross platform compatible with Linux, Windows 10, Android, iOS. Parts of the library have been rewritten to work with 
 					Arduino ESP8266/32; This includes all ECC curves and post-quantum algorithms. 
